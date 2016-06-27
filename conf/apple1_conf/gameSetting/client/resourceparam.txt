@@ -1,0 +1,3 @@
+#开放下一图占有率条件	最大占领时间	禁战开始时间	禁战结束时间	等级限制	占领CD	占领保护时间	默认始终开放的地图序号	需要消耗的攻击令	免费查看玩家信息次数	查看玩家信息花费	查看重置时间
+OpenCondition	MaxOccupyTime	BeginForbidTime	EndForbidTime	LevelLimit	OccupyCD	ProtectTime	DefOpenIndex	NeedAtt	FreeLookCount	LookCostGold	LookResetTime
+80	28800	23	8	0	300	60	1	4	2	2	30

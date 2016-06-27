@@ -1,0 +1,3 @@
+#					
+serverid	servername	address	port	status	respath	resmd5file	resmd5filemd5
+1	 黄巾之乱	115.29.188.81	15010	2	http://115.29.188.81/uc/Resource/	http://115.29.188.81/uc/1.04/dst/ResourceMD5.zip	http://115.29.188.81/uc/1.04/dst/ResourceMD5md5.txt

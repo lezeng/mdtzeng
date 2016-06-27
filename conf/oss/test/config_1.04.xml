@@ -1,0 +1,3 @@
+<Config>
+    <ServerList Url="http://gbsgtest.oss-cn-hangzhou.aliyuncs.com/dst/server_list.txt" NewVersion="1.04"/>
+</Config>

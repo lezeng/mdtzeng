@@ -1,0 +1,5 @@
+#玩家创建后默认阵型	位置	武将ID
+formationid	pos	roleid
+16000101	2	12000047
+
+

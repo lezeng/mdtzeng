@@ -1,0 +1,64 @@
+soldierstandard.txt  武将属性表
+soldierdata.txt      武将表
+vip.txt              vip
+soldierchance.txt    刷将
+item_equip.txt       装备
+item_material.txt    材料
+monstersoldierdata.txt 怪物武将
+config.txt             全局配置表
+map.txt                地图
+monster.txt            怪物
+itemdropgroup.txt      掉落
+fromation.txt          阵型
+soldiertosoulnum.txt   武将转将魂数量
+technology.txt         科技
+playerlevel.txt        玩家经验
+soldierlevel.txt       武将经验
+equip_melt_chain.txt   熔炼
+fromationlimit.txt     上阵武将数量限制
+equip_integrity_weight.txt 极品度权重
+levy.txt                   征收
+openformation.txt          阵型开放
+string.txt                 字符串资源
+filter.txt                 敏感字
+defrole.txt                玩家出时生默认给的武将
+defformation.txt           玩家出时生默认整形
+dynshop.txt                动态商店
+dynshopfreshtime.txt       动态商店刷新时间
+dynshopfreshcost.txt       动态商店刷新消耗金币
+skilleffect.txt			  特效的UI声音数据配置文件
+resourcebattle.txt         资源战
+resourceyield.txt          资源战产量
+resourceopen.txt           资源战地图开放信息
+task.txt		任务配置
+arenafightreward	竞技场每次战斗完成奖励
+arenaplacereward	竞技场每日排名奖励
+everyday_ectype.txt	每日副本
+emigrated.txt		闯关
+autogrow.txt		自动增加资源
+recbysoul.txt           将魂招募武将
+vipdonate.txt         vip每日赠送
+convert.txt           充值兑换
+monthcard.txt         月卡赠送
+newbieguide.txt        新手引导获取奖励
+support.txt            增援系统
+
+activity.txt          活动总表
+activity_7day.txt     7日开服
+activity_accumulatepay.txt 累积消费
+activity_doublereward.txt  双倍奖励
+activity_everydaypay.txt   每日充值
+activity_fight.txt   通关关卡
+activity_fistpay.txt  首冲
+activity_girl.txt  后宫
+activity_growup.txt 成长福利
+activity_rank.txt排行奖励
+activity_shopping.txt 限时抢购
+activity_singlepay.txt 单笔充值
+activity_welfare.txt全面福利
+activity_activatekey.txt 激活码
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//跳转说明
+//type 跳转Type：说明往哪个主页面跳转的
+//json 跳转的具体信息：比如跳的第一章的第一关的 的 普通征 战副本 {"chapter":1 ,"level":1,"leveltype":1}

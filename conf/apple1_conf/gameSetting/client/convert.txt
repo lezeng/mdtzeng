@@ -1,0 +1,10 @@
+#产品号(这里修改后要修改FirstUse脚本中的数据)	APP对应的product_id	金额	金币	首冲赠送	后续固定赠送	幸运值	月卡(1是 0否)	月卡天数
+orderid	appproductid	money	gold	firstdonate	donate	lucky	monthcard	day
+1	com.sd.gbsg.6	6	60	0	0	60	0	0
+2	com.sd.gbsg.18	18	180	8	8	180	0	0
+3	com.sd.gbsg.monthcard	25	300	0	0	250	1	30
+4	com.sd.gbsg.30	30	300	15	15	300	0	0
+5	com.sd.gbsg.98	98	980	80	80	980	0	0
+6	com.sd.gbsg.198	198	1980	240	240	1980	0	0
+7	com.sd.gbsg.328	328	3280	600	600	3280	0	0
+8	com.sd.gbsg.648	648	6480	1620	1620	6480	0	0

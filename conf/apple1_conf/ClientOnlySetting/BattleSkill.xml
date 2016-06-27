@@ -1,0 +1,2723 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<battle_skill version="1">
+
+<effect>
+    <!--
+	（播放速度为 10帧每秒）
+     item id="特效ID"（同一个ID不能在一个部分中不能调用两次）
+	 effect_type="特效类型 1- 图片特效 2- 声音特效 3- 震屏 "
+	 effect_file="特效文件夹名" 
+	 effect_file_num="图片张数" （以上4项为必填项）
+	 
+	 start_time="开始时间，秒为单位直接写时间以上一个动画播放结束为开始算 （飞行的起始时间以攻击的起始时间来算）"
+	 
+	 play_time= "播放时间，=图片张数*0.05（攻击和命中必填）"（现在没用）
+	 speed="移动速度 单位 像素/秒（移动和飞行必填）"
+	 line="弹道，(S)直线 (C)曲线(没实现)" 
+	 
+	 next_id="飞行特效关联的命中特效id" next_id_taget="飞行特效关联的命中模型动作id" （命中必须关联飞行，飞行不必关联命中）
+	 
+	 start_position="A;10;20(相对于攻击者(A)或者防御者(T)的坐标 单位 像素)(飞行和移动)" end_position=""（攻击必须(A)和命中必须(T)的起始结束偏移一样）（必填项）（所有偏移为实际距离除2）
+	 （移动和攻击以T为参照点时，不能针对多个目标点）（所有参考点偏移都考虑成左边打右边时，＞0往左偏和上偏，＜0往右偏和下偏）
+	 start_opacity="0-255 透明度" end_opacity=""
+	 start_scale="1.0 比例缩放" end_scale=""
+	 start_rotation="旋转角度 单位 度数" end_rotation=""（左打右，顺时针）
+	 
+	 hide_self 是否隐藏本体,0为不隐藏，1为隐藏，默认为0
+	 auto_rotate 自动旋转，是（1）否（0或不配）程序根据（默认向右）起始结束点计算旋转角度
+	
+	 attack_end_idle="攻击动画结束后是否播待机动画 1 播放 0 不播放 默认不播放"（现在没用）
+	 general_return_time="武将返回时间，以攻击动画开始计算"（都需配置）
+	 
+	 target="替换攻击者或目标的待机动画，模型动作特效中需要此值，(A)攻击者（移动和攻击） (T)目标（命中）" （有模型动作则必填(包括挨打)）
+	 （挨打动作配置的effect_file_num>0才会播放动画）（所有挨打动画播放完，才会播放待机动画）（不配默认非本体）
+	 drop_blood="掉血百分比(分段填在多个命中特效中，实现多段掉血，默认100)"
+	 （默认命中播放完后即结束本人行动，所以注意命中结束时，其他部分也已结束）
+	 
+	 shock_start_time 震动 起始时间	（默认为0，配置时至少大于0（好像不用了））（以下3个都配在命中里面，以命中起始时间算，不受start_time影响）
+	 splash_picture 溅屏 图片（程序加".png"）
+	 splash_start_time 渐屏 起始时间
+	 
+	 music_file 音效文件名
+	 music_start_time 音效开始播放时间（默认为0，以特效star_time后开始算）
+	 ></item>
+    -->
+	<!-- 以下是声明，要先声明才能调用 -->
+	     <!--移动-->
+             <item id="1001" effect_type="1" effect_file="caocao01s_" effect_file_num="10" speed="500" start_position="A;0;0" end_position="T;0;0" target="A"></item>
+			 <item id="1002" effect_type="1" effect_file="caocao01s_" effect_file_num="10" speed="500" start_position="A;0;0" end_position="T;0;0" ></item>
+			 <item id="1003" effect_type="1" effect_file="caocao01s_" effect_file_num="10" speed="500" start_position="A;0;0" end_position="T;0;0" ></item>
+			 <item id="1004" effect_type="1" effect_file="caocao01s_" effect_file_num="10" speed="500" start_position="A;0;0" end_position="T;0;0" ></item>
+
+	     <!--攻击-->
+             <item id="1101" effect_type="1" effect_file="baozha21GG_" effect_file_num="6" start_time="0" start_position="A;0;0" end_position="A;0;0" start_scale="2" end_scale="2"></item>
+             <item id="1102" effect_type="1" effect_file="caocao01s_" effect_file_num="13" start_time="0" start_position="A;0;0" end_position="A;0;0" target="A"></item>
+			 <item id="1103" effect_type="1" effect_file="baozha21GG_" effect_file_num="6" start_time="0" start_position="A;0;0" end_position="A;0;0" start_scale="2" end_scale="2"></item>
+			 
+         <!--飞行-->
+             <item id="1201" effect_type="1" effect_file="ziyandan31GG_" effect_file_num="3" start_time="0.45" speed="800" start_position="A;0;0" end_position="T;0;0" start_scale="2" end_scale="2" auto_rotate="1"
+	             next_id="1301" next_id_taget="1302"></item>
+             <item id="1202" effect_type="1" effect_file="ziyandan31GG_" effect_file_num="3" start_time="0.7" speed="800" start_position="A;0;0" end_position="T;0;0" start_scale="2" end_scale="2" auto_rotate="1"
+	             next_id="1303" next_id_taget="1304"></item>
+			 <item id="1203" effect_type="1" effect_file="ziyandan31GG_" effect_file_num="3" start_time="0.7" speed="800" start_position="A;0;0" end_position="T;0;0" start_scale="2" end_scale="2" auto_rotate="1"
+	             next_id="1305" next_id_taget="1306"></item>
+			 <item id="1204" effect_type="1" effect_file="ziyandan31GG_" effect_file_num="3" start_time="0.7" speed="800" start_position="A;0;0" end_position="T;0;0" start_scale="2" end_scale="2" auto_rotate="1"
+	             next_id="1307" next_id_taget="1308"></item>
+			 <item id="1205" effect_type="1" effect_file="ziyandan31GG_" effect_file_num="3" start_time="0.7" speed="800" start_position="A;0;0" end_position="T;0;0" start_scale="2" end_scale="2" auto_rotate="1"
+	             next_id="1309" next_id_taget="1310"></item> 
+			 <item id="1206" effect_type="1" effect_file="ziyandan31GG_" effect_file_num="3" start_time="0.45" speed="800" start_position="A;0;0" end_position="T;0;0" start_scale="2" end_scale="2" auto_rotate="1"
+	             next_id="1311" next_id_taget="1312"></item>
+             <item id="1207" effect_type="1" effect_file="ziyandan31GG_" effect_file_num="3" start_time="0.7" speed="800" start_position="A;0;0" end_position="T;0;0" start_scale="2" end_scale="2" auto_rotate="1"
+	             next_id="1313" next_id_taget="1314"></item>
+			 <item id="1208" effect_type="1" effect_file="ziyandan31GG_" effect_file_num="3" start_time="0.7" speed="800" start_position="A;0;0" end_position="T;0;0" start_scale="2" end_scale="2" auto_rotate="1"
+	             next_id="1315" next_id_taget="1316"></item>
+			 <item id="1209" effect_type="1" effect_file="ziyandan31GG_" effect_file_num="3" start_time="0.7" speed="800" start_position="A;0;0" end_position="T;0;0" start_scale="2" end_scale="2" auto_rotate="1"
+	             next_id="1317" next_id_taget="1318"></item>
+			 <item id="1210" effect_type="1" effect_file="ziyandan31GG_" effect_file_num="3" start_time="0.7" speed="800" start_position="A;0;0" end_position="T;0;0" start_scale="2" end_scale="2" auto_rotate="1"
+	             next_id="1319" next_id_taget="1320"></item> 
+				 
+			 <item id="1211" effect_type="1" speed="100" start_position="A;0;0" end_position="T;0;0" start_scale="2" end_scale="2" auto_rotate="1"></item> 
+			 <item id="1212" effect_type="1" speed="100" start_position="A;0;0" end_position="T;0;0" start_scale="2" end_scale="2" auto_rotate="1"></item> 
+			 <item id="1213" effect_type="1" speed="100" start_position="A;0;0" end_position="T;0;0" start_scale="2" end_scale="2" auto_rotate="1"></item> 
+			 <item id="1214" effect_type="1" speed="100" start_position="A;0;0" end_position="T;0;0" start_scale="2" end_scale="2" auto_rotate="1"></item> 
+			 <item id="1215" effect_type="1" speed="100" start_position="A;0;0" end_position="T;0;0" start_scale="2" end_scale="2" auto_rotate="1"></item> 
+			 <item id="1216" effect_type="1" speed="100" start_position="A;0;0" end_position="T;0;0" start_scale="2" end_scale="2" auto_rotate="1"></item> 
+			 <item id="1217" effect_type="1" speed="100" start_position="A;0;0" end_position="T;0;0" start_scale="2" end_scale="2" auto_rotate="1"></item> 
+			 <item id="1218" effect_type="1" speed="100" start_position="A;0;0" end_position="T;0;0" start_scale="2" end_scale="2" auto_rotate="1"></item> 
+			 <item id="1219" effect_type="1" speed="100" start_position="A;0;0" end_position="T;0;0" start_scale="2" end_scale="2" auto_rotate="1"></item> 
+			 <item id="1220" effect_type="1" speed="100" start_position="A;0;0" end_position="T;0;0" start_scale="2" end_scale="2" auto_rotate="1"></item> 
+			 <item id="1221" effect_type="1" speed="100" start_position="A;0;0" end_position="T;0;0" start_scale="2" end_scale="2" auto_rotate="1"></item> 
+			 <item id="1222" effect_type="1" speed="100" start_position="A;0;0" end_position="T;0;0" start_scale="2" end_scale="2" auto_rotate="1"></item> 
+			 <item id="1223" effect_type="1" speed="100" start_position="A;0;0" end_position="T;0;0" start_scale="2" end_scale="2" auto_rotate="1"></item> 
+			 <item id="1224" effect_type="1" speed="100" start_position="A;0;0" end_position="T;0;0" start_scale="2" end_scale="2" auto_rotate="1"></item> 
+			 <item id="1225" effect_type="1" speed="100" start_position="A;0;0" end_position="T;0;0" start_scale="2" end_scale="2" auto_rotate="1"></item> 
+			 
+         <!--命中-->
+             <item id="1301" effect_type="1" effect_file="ziyanbao41GG_" effect_file_num="13" play_time="0.65" start_position="T;0;0" end_position="T;0;0" start_scale="2" end_scale="2"></item>
+	         <item id="1302" effect_type="1" effect_file="caocao01ss_" effect_file_num="9" play_time="0.45" start_position="T;0;0" end_position="T;0;0" target="T"></item>
+             <item id="1303" effect_type="1" effect_file="ziyanbao41GG_" effect_file_num="13" play_time="0.3" start_position="T;0;0" end_position="T;0;0" start_scale="2" end_scale="2"></item>
+	         <item id="1304" effect_type="1" effect_file="caocao01ss_" effect_file_num="9" play_time="0.45" start_position="T;0;0" end_position="T;0;0" target="T"></item>
+			 <item id="1305" effect_type="1" effect_file="ziyanbao41GG_" effect_file_num="13" play_time="0.65" start_position="T;0;0" end_position="T;0;0" start_scale="2" end_scale="2"></item>
+	         <item id="1306" effect_type="1" effect_file="caocao01ss_" effect_file_num="9" play_time="0.45" start_position="T;0;0" end_position="T;0;0" target="T"></item>
+             <item id="1307" effect_type="1" effect_file="ziyanbao41GG_" effect_file_num="13" play_time="0.3" start_position="T;0;0" end_position="T;0;0" start_scale="2" end_scale="2"></item>
+	         <item id="1308" effect_type="1" effect_file="caocao01ss_" effect_file_num="9" play_time="0.45" start_position="T;0;0" end_position="T;0;0" target="T"></item>
+			 <item id="1309" effect_type="1" effect_file="ziyanbao41GG_" effect_file_num="13" play_time="0.65" start_position="T;0;0" end_position="T;0;0" start_scale="2" end_scale="2"></item>
+	         <item id="1310" effect_type="1" effect_file="caocao01ss_" effect_file_num="9" play_time="0.45" start_position="T;0;0" end_position="T;0;0" target="T"></item>
+			 <item id="1311" effect_type="1" effect_file="ziyanbao41GG_" effect_file_num="13" play_time="0.65" start_position="T;0;0" end_position="T;0;0" start_scale="2" end_scale="2"></item>
+	         <item id="1312" effect_type="1" effect_file="caocao01ss_" effect_file_num="9" play_time="0.45" start_position="T;0;0" end_position="T;0;0" target="T"></item>
+             <item id="1313" effect_type="1" effect_file="ziyanbao41GG_" effect_file_num="13" play_time="0.3" start_position="T;0;0" end_position="T;0;0" start_scale="2" end_scale="2"></item>
+	         <item id="1314" effect_type="1" effect_file="caocao01ss_" effect_file_num="9" play_time="0.45" start_position="T;0;0" end_position="T;0;0" target="T"></item>
+			 <item id="1315" effect_type="1" effect_file="ziyanbao41GG_" effect_file_num="13" play_time="0.65" start_position="T;0;0" end_position="T;0;0" start_scale="2" end_scale="2"></item>
+	         <item id="1316" effect_type="1" effect_file="caocao01ss_" effect_file_num="9" play_time="0.45" start_position="T;0;0" end_position="T;0;0" target="T"></item>
+             <item id="1317" effect_type="1" effect_file="ziyanbao41GG_" effect_file_num="13" play_time="0.3" start_position="T;0;0" end_position="T;0;0" start_scale="2" end_scale="2"></item>
+	         <item id="1318" effect_type="1" effect_file="caocao01ss_" effect_file_num="9" play_time="0.45" start_position="T;0;0" end_position="T;0;0" target="T"></item>
+			 <item id="1319" effect_type="1" effect_file="ziyanbao41GG_" effect_file_num="13" play_time="0.65" start_position="T;0;0" end_position="T;0;0" start_scale="2" end_scale="2"></item>
+	         <item id="1320" effect_type="1" effect_file="caocao01ss_" effect_file_num="9" play_time="0.45" start_position="T;0;0" end_position="T;0;0" target="T"></item>
+			 <item id="1321" effect_type="1" effect_file="ziyanbao41GG_" effect_file_num="13" play_time="0.65" start_position="T;0;0" end_position="T;0;0" start_scale="2" end_scale="2"></item>
+			 <item id="1322" effect_type="1" effect_file="ziyanbao41GG_" effect_file_num="13" play_time="0.65" start_position="T;0;0" end_position="T;0;0" start_scale="2" end_scale="2"></item>
+			 <item id="1323" effect_type="1" effect_file="ziyanbao41GG_" effect_file_num="13" play_time="0.65" start_position="T;0;0" end_position="T;0;0" start_scale="2" end_scale="2"></item>
+			 <item id="1324" effect_type="1" effect_file="ziyanbao41GG_" effect_file_num="13" play_time="0.65" start_position="T;0;0" end_position="T;0;0" start_scale="2" end_scale="2"></item>
+			 <item id="1325" effect_type="1" effect_file="ziyanbao41GG_" effect_file_num="13" play_time="0.65" start_position="T;0;0" end_position="T;0;0" start_scale="2" end_scale="2"></item>
+			 <item id="1326" effect_type="1" effect_file="ziyanbao41GG_" effect_file_num="13" play_time="0.65" start_position="T;0;0" end_position="T;0;0" start_scale="2" end_scale="2"></item>
+			 <item id="1327" effect_type="1" effect_file="ziyanbao41GG_" effect_file_num="13" play_time="0.65" start_position="T;0;0" end_position="T;0;0" start_scale="2" end_scale="2"></item>
+			 <item id="1328" effect_type="1" effect_file="ziyanbao41GG_" effect_file_num="13" play_time="0.65" start_position="T;0;0" end_position="T;0;0" start_scale="2" end_scale="2"></item>
+			 <item id="1329" effect_type="1" effect_file="ziyanbao41GG_" effect_file_num="13" play_time="0.65" start_position="T;0;0" end_position="T;0;0" start_scale="2" end_scale="2"></item>
+			 <item id="1330" effect_type="1" effect_file="ziyanbao41GG_" effect_file_num="13" play_time="0.65" start_position="T;0;0" end_position="T;0;0" start_scale="2" end_scale="2"></item>
+			 <item id="1331" effect_type="1" effect_file="ziyanbao41GG_" effect_file_num="13" play_time="0.65" start_position="T;0;0" end_position="T;0;0" start_scale="2" end_scale="2"></item>
+			 <item id="1332" effect_type="1" effect_file="ziyanbao41GG_" effect_file_num="13" play_time="0.65" start_position="T;0;0" end_position="T;0;0" start_scale="2" end_scale="2"></item>
+			 <item id="1333" effect_type="1" effect_file="ziyanbao41GG_" effect_file_num="13" play_time="0.65" start_position="T;0;0" end_position="T;0;0" start_scale="2" end_scale="2"></item>
+			 <item id="1334" effect_type="1" effect_file="ziyanbao41GG_" effect_file_num="13" play_time="0.65" start_position="T;0;0" end_position="T;0;0" start_scale="2" end_scale="2"></item>
+			 <item id="1335" effect_type="1" effect_file="ziyanbao41GG_" effect_file_num="13" play_time="0.65" start_position="T;0;0" end_position="T;0;0" start_scale="2" end_scale="2"></item>
+			 			 
+		 <!--长度为0的空飞行（空飞行时star_time陪在命中里，但同样要配next_id）-->
+		     <item id="1401" effect_type="1" effect_file="ziyandan31GG_" effect_file_num="0" speed="0" start_position="A;0;0" end_position="T;0;0"></item>
+			 <item id="1402" effect_type="1" effect_file="ziyandan31GG_" effect_file_num="0" speed="0" start_position="A;0;0" end_position="T;0;0"></item>
+			 <item id="1403" effect_type="1" effect_file="ziyandan31GG_" effect_file_num="0" speed="0" start_position="A;0;0" end_position="T;0;0"></item>
+			 <item id="1404" effect_type="1" effect_file="ziyandan31GG_" effect_file_num="0" speed="0" start_position="A;0;0" end_position="T;0;0"></item>
+			 <item id="1405" effect_type="1" effect_file="ziyandan31GG_" effect_file_num="0" speed="0" start_position="A;0;0" end_position="T;0;0"></item>
+			 <item id="1406" effect_type="1" effect_file="ziyandan31GG_" effect_file_num="0" speed="0" start_position="A;0;0" end_position="T;0;0"></item>
+			 <item id="1407" effect_type="1" effect_file="ziyandan31GG_" effect_file_num="0" speed="0" start_position="A;0;0" end_position="T;0;0"></item>
+			 <item id="1408" effect_type="1" effect_file="ziyandan31GG_" effect_file_num="0" speed="0" start_position="A;0;0" end_position="T;0;0"></item>
+			 <item id="1409" effect_type="1" effect_file="ziyandan31GG_" effect_file_num="0" speed="0" start_position="A;0;0" end_position="T;0;0"></item>
+			 <item id="1410" effect_type="1" effect_file="ziyandan31GG_" effect_file_num="0" speed="0" start_position="A;0;0" end_position="T;0;0"></item>
+			 
+		 <!--声音文件 item   id="声音id" effect_type="特效类型 2-声音特效" effect_file = "声音文件名" start_time="开始时间 秒为单位直接写时间   以上一个动画播放结束为开始算 " -->
+             <item id="2001" effect_type="2"  effect_file="1.mp3" start_time="2.0"></item>
+</effect>
+
+<skills>
+    <!-- skill id ="技能id (配置表里面的)  target_type="1 单体 2 全体 3 竖列 4 横排"-->
+	<!--测试示例-->
+    <skill id ="29010000"  target_type="1">
+	    <!--移动-->
+
+        <!--攻击-->
+        <attack>
+             <item id="1101"></item>
+             <item id="1102" general_return_time="0.9"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1201"></item>
+			 <item id="1202"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+            <item id="1301"></item>
+            <item id="1302" drop_blood="50"></item>
+            
+            <item id="1303"></item>
+            <item id="1304" drop_blood="50"></item>    
+        </arm>
+        
+    </skill>
+    
+<!--10个 特制特效-->
+	
+	<!--郭嘉-->
+    <skill id ="29010001"  target_type="3">
+        <!--移动-->
+		
+		<!--攻击-->
+        <attack>
+             <item id="1101" effect_type="1" effect_file="guojiashifa_" music_file="guojia2.mp3" effect_file_num="15" start_time="0.3"></item>
+             <item id="1102" effect_type="1" effect_file="guojia01s1_" effect_file_num="13" start_time="0" target="A" general_return_time="2"></item>
+        </attack>
+        
+        <!--飞行-->
+		<fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+		
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="guojiamingzhong_" music_file="guojia4.mp3" effect_file_num="27" start_time="0.7"></item>
+	         <item id="1302" start_time="2.2" drop_blood="100"></item>
+         </arm> 
+    </skill>
+	
+	<!--曹操-->
+	<skill id ="29010002"  target_type="2">
+	    <!--移动-->
+        
+        <!--攻击-->
+        <attack>
+             <item id="1102" effect_file="caocaoshifa_" music_file="caocao2.mp3" effect_file_num="16" start_time="0" general_return_time="2"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1201" effect_type="1" effect_file="caocaofeixing_" effect_file_num="3" start_time="1.1" speed="1500" start_position="T;-500;500" end_position="T;0;0"></item>
+			 <item id="1202" effect_type="1" effect_file="caocaofeixing_" effect_file_num="3" start_time="1.15" speed="1500" start_position="T;-440;530" end_position="T;60;30"></item>
+			 <item id="1203" effect_type="1" effect_file="caocaofeixing_" effect_file_num="3" start_time="1.18" speed="1500" start_position="T;-450;435" end_position="T;50;-65"></item>
+			 <item id="1204" effect_type="1" effect_file="caocaofeixing_" effect_file_num="3" start_time="1.25" speed="1500" start_position="T;-450;460" end_position="T;-50;-40"></item>
+			 <item id="1205" effect_type="1" effect_file="caocaofeixing_" effect_file_num="3" start_time="1.25" speed="1500" start_position="T;-480;425" end_position="T;-20;-75"></item>
+			 <item id="1206" effect_type="1" effect_file="caocaofeixing_" effect_file_num="3" start_time="1.3" speed="1500" start_position="T;-425;470" end_position="T;-75;-30"></item>
+			 <item id="1207" effect_type="1" effect_file="caocaofeixing_" effect_file_num="3" start_time="1.32" speed="1500" start_position="T;-475;490" end_position="T;-25;-10"></item>
+			 <item id="1208" effect_type="1" effect_file="caocaofeixing_" effect_file_num="3" start_time="1.35" speed="1500" start_position="T;-475;510" end_position="T;25;10"></item>
+			 <item id="1209" effect_type="1" effect_file="caocaofeixing_" effect_file_num="3" start_time="1.4" speed="1500" start_position="T;-425;560" end_position="T;75;60"></item>
+			 <item id="1210" effect_type="1" effect_file="caocaofeixing_" effect_file_num="3" start_time="1.5" speed="1500" start_position="T;-490;485" end_position="T;10;-15"></item> 
+			 <item id="1401" next_id="1321"></item>
+			 <item id="1402" next_id="1322"></item>
+			 <item id="1403" next_id="1323"></item>
+			 <item id="1404" next_id="1324"></item>
+			 <item id="1405" next_id="1325"></item>
+			 <item id="1406" next_id="1326"></item>
+			 <item id="1407" next_id="1327"></item>
+			 <item id="1408" next_id="1328"></item>
+			 <item id="1409" next_id="1329"></item>
+			 <item id="1410" next_id="1330"></item>
+		</fly>
+         
+        <!--命中-->                                                                                                                                                 
+        <arm>
+             <item id="1301" effect_type="1" effect_file="caocaomingzhong_" music_file="caocao4.mp3" effect_file_num="10" start_position="T;0;0"></item>
+             <item id="1302" drop_blood="0"></item>
+             <item id="1303" effect_type="1" effect_file="caocaomingzhong_" effect_file_num="10" start_position="T;60;30"></item>
+             <item id="1304" drop_blood="20"></item>
+             <item id="1305" effect_type="1" effect_file="caocaomingzhong_" effect_file_num="10" start_position="T;50;-65"></item>
+             <item id="1306" drop_blood="0"></item>
+             <item id="1307" effect_type="1" effect_file="caocaomingzhong_" effect_file_num="10" start_position="T;-50;-40"></item>
+             <item id="1308" drop_blood="20"></item>
+             <item id="1309" effect_type="1" effect_file="caocaomingzhong_" effect_file_num="10" start_position="T;-20;-75"></item>
+             <item id="1310" drop_blood="0"></item>
+			 <item id="1311" effect_type="1" effect_file="caocaomingzhong_" music_file="caocao4.mp3" effect_file_num="10" start_position="T;-75;-30"></item>
+             <item id="1312" drop_blood="20" shock_start_time="0.01"></item>
+             <item id="1313" effect_type="1" effect_file="caocaomingzhong_" effect_file_num="10" start_position="T;-25;-10"></item>
+             <item id="1314" drop_blood="0"></item>
+             <item id="1315" effect_type="1" effect_file="caocaomingzhong_" effect_file_num="10" start_position="T;25;10" ></item>
+             <item id="1316" drop_blood="20"></item>
+             <item id="1317" effect_type="1" effect_file="caocaomingzhong_" effect_file_num="10" start_position="T;75;60" ></item>
+             <item id="1318" drop_blood="0"></item>
+             <item id="1319" effect_type="1" effect_file="caocaomingzhong_" effect_file_num="10" start_position="T;10;-15" ></item>
+			 <item id="1320" drop_blood="20"></item>
+			 <item id="1321" effect_type="1" effect_file="caocaomingzhong2_" effect_file_num="12" start_time="1.75" start_position="T;0;0"></item>
+             <item id="1322" effect_type="1" effect_file="caocaomingzhong2_" effect_file_num="12" start_time="1.88" start_position="T;60;30"></item>
+             <item id="1323" effect_type="1" effect_file="caocaomingzhong2_" effect_file_num="12" start_time="1.92" start_position="T;50;-65"></item>
+             <item id="1324" effect_type="1" effect_file="caocaomingzhong2_" effect_file_num="12" start_time="1.97" start_position="T;-50;-40"></item>
+             <item id="1325" effect_type="1" effect_file="caocaomingzhong2_" effect_file_num="12" start_time="2" start_position="T;-20;-75"></item>
+			 <item id="1326" effect_type="1" effect_file="caocaomingzhong2_" effect_file_num="12" start_time="2.1" start_position="T;-75;-30"></item>
+             <item id="1327" effect_type="1" effect_file="caocaomingzhong2_" effect_file_num="12" start_time="2.15" start_position="T;-25;-10"></item>
+             <item id="1328" effect_type="1" effect_file="caocaomingzhong2_" effect_file_num="12" start_time="2.2" start_position="T;25;10" ></item>
+             <item id="1329" effect_type="1" effect_file="caocaomingzhong2_" effect_file_num="12" start_time="2.23" start_position="T;75;60" ></item>
+             <item id="1330" effect_type="1" effect_file="caocaomingzhong2_" effect_file_num="12" start_time="2.3" start_position="T;10;-15" ></item> 
+        </arm> 
+    </skill>
+	
+	<!--诸葛亮-->
+    <skill id ="29010003"  target_type="2">
+        <!--移动-->
+		
+		<!--攻击-->
+        <attack>
+             <item id="1102" effect_file="zhugeliangshifa_" music_file="zhugeliang2.mp3" effect_file_num="11" start_time="0.2" target="A" general_return_time="2"></item>
+        </attack>
+        
+        <!--飞行-->
+		<fly>
+             <item id="1201" effect_file="zhugeliangfeixing_" effect_file_num="4" start_time="0.5" speed="1000" start_position="A;35;30" end_position="T;-45;155" start_scale="2.2" end_scale="3"
+			     next_id="1301" next_id_taget="1302"></item>
+			 <item id="1401"
+			     next_id="1303"></item>
+			 <item id="1402"
+			     next_id="1305"></item>
+        </fly>
+		
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_type="1" effect_file="zhugeliangmingzhong_" music_file="zhugeliang4.mp3" effect_file_num="15" start_time="0.1" start_position="T;-18;39" end_position="T;-18;39" shock_start_time="0.8"></item>
+	         <item id="1302" start_time="1.2" drop_blood="100"></item>
+			 <item id="1303" effect_type="1" effect_file="zhugeliangmingzhong_" effect_file_num="15" start_time="1" start_position="T;-18;39" end_position="T;-18;39"></item>
+			 <item id="1305" effect_type="1" effect_file="zhugeliangmingzhong_" effect_file_num="15" start_time="1.3" start_position="T;-18;39" end_position="T;-18;39"></item>
+        </arm>
+    </skill>
+	
+	<!--吕布-->
+    <skill id ="29010004"  target_type="2">
+        <!--移动-->
+		
+		<!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="lvbushifa_" music_file="lvbu2.mp3" effect_file_num="8" start_time="0.1" start_position="A;-10;63" end_position="A;-10;63"></item>		
+             <item id="1102" effect_file="lvbu01s1_" effect_file_num="7" start_time="0" target="A" general_return_time="2.2" hide_self="1"></item>
+		</attack>
+        
+        <!--飞行-->
+		<fly>
+			 <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+			 <item id="1402"
+			     next_id_taget="1304"></item>
+        </fly>
+		
+        <!--命中-->
+        <arm>
+		     <item id="1301" effect_file="lvbumingzhong_" music_file="lvbu4.mp3" effect_file_num="14" start_time="0.75" start_position="T;-10;19" end_position="T;-10;19" shock_start_time="1"></item>
+	         <item id="1302" start_time="1.25" drop_blood="50" splash_picture="jianxue" splash_start_time="1.25"></item>
+			 <item id="1304" start_time="2.1" drop_blood="50"></item>
+        </arm> 
+    </skill>
+	
+	<!--周瑜-->
+    <skill id ="29010005"  target_type="2">
+        <!--移动-->
+		 <move>
+             <item id="1001" effect_file="zhouyufeixing_" effect_file_num="4" speed="800" start_position="A;0;0" end_position="T;-184;164" target="A"></item>
+        </move>
+		
+		<!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="zhouyumingzhong_" music_file="zhouyu4.mp3" effect_file_num="14"
+    			 start_time="0" start_position="A;125;-120" end_position="A;125;-120" target="A" general_return_time="1.5"></item>
+        </attack>
+        
+        <!--飞行-->
+		<fly>
+			 <item id="1401"
+			     next_id_taget="1302"></item>
+			 <item id="1402"
+			     next_id_taget="1304"></item>
+        </fly>
+		
+        <!--命中-->
+        <arm>
+	         <item id="1302" start_time="0.7" drop_blood="50" shock_start_time="1.2"  splash_picture="jianxue" splash_start_time="0.7"></item>
+			 <item id="1304" start_time="1.5" drop_blood="50"></item>
+        </arm> 
+    </skill>
+	
+	<!--赵云-->
+    <skill id ="29010006"  target_type="4">
+        <!--移动-->
+		
+		<!--攻击-->
+        <attack>
+             <item id="1102" effect_type="1" effect_file="zhaoyunshifa_" effect_file_num="9" start_time="0" target="A" hide_self="1" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+		<fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+		
+        <!--命中--> 
+        <arm>
+             <item id="1301" effect_file="zhaoyunmingzhong_" music_file="zhaoyun4.mp3" effect_file_num="7" start_time="0.7" start_position="T;30;0" end_position="T;30;0"></item>
+	         <item id="1302" start_time="1.3" target="T" drop_blood="100" shock_start_time="1.35" splash_picture="jianxue" splash_start_time="1.25"></item>
+        </arm>
+    </skill>
+	
+	<!--王朗 （司马懿）-->
+    <skill id ="29010007"  target_type="1">
+        <!--移动-->
+		
+		<!--攻击-->
+        <attack>
+             <item id="1102" effect_file="wanglangshifa_" music_file="wanglang2.mp3" effect_file_num="23" start_time="0" target="A" general_return_time="2.5"></item>
+        </attack>
+        
+        <!--飞行-->
+		<fly>
+             <item id="1201" effect_file="wanglangfeixing_" effect_file_num="3" start_time="0.6" speed="1000" start_position="A;0;76" end_position="T;-20;135"
+			     next_id="1301" next_id_taget="1302"></item>
+			 <item id="1211" effect_file="wanglangfeixing2_" effect_file_num="3" start_time="1.2" speed="1000" start_position="A;36;83" end_position="T;20;115"></item>
+        </fly>
+		
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="wanglangmingzhong_" music_file="wanglang4.mp3" effect_file_num="24" start_time="0" start_position="T;0;76" end_position="T;0;76" shock_start_time="1.2"></item>
+	         <item id="1302" start_time="1.8" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--大乔 （关银屏）-->
+    <skill id ="29010008"  target_type="1">
+        <!--移动-->
+		
+		<!--攻击-->
+        <attack>
+             <item id="1102" effect_type="1" effect_file="daqiaoshifa_" music_file="daqiao2.mp3" effect_file_num="18" start_time="0" target="A" general_return_time="2"></item>
+        </attack>
+        
+        <!--飞行-->
+		<fly>
+             <item id="1201" effect_file="daqiaofeixing1_" effect_file_num="4" start_time="0.5" speed="1000" start_position="A;0;31" end_position="T;0;0"
+			     next_id="1301" next_id_taget="1302"></item>
+			 <item id="1202" effect_file="daqiaofeixing2_" effect_file_num="4" start_time="1.4" speed="1000" start_position="A;-27;-13" end_position="T;0;0"
+			     next_id="1303" next_id_taget="1304"></item>
+        </fly>
+		
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="daqiaomingzhong1_" music_file="daqiao4.mp3" effect_file_num="7" start_time="0" start_position="T;0;0" end_position="T;0;0"></item>
+	         <item id="1302" start_time="0.1" target="T" drop_blood="50" splash_picture="jianxue" splash_start_time="0.1"></item>
+	         <item id="1304" start_time="0" target="T" drop_blood="50"></item>
+			 <item id="1303" effect_file="daqiaomingzhong2_" effect_file_num="9" start_time="0" start_position="T;0;0" end_position="T;0;0"></item>
+        </arm>
+    </skill>
+	
+	<!--典韦-->
+    <skill id ="29010009"  target_type="2">
+        <!--移动-->
+		 <move>
+             <item id="1001" effect_file="dianwei01s1_" music_file="dianwei2.mp3" effect_file_num="6" speed="700" start_position="A;0;0" end_position="T;-40;0" target="A"></item>
+        </move>
+		
+		<!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="dianwei01s2_" effect_file_num="6" start_time="0" start_position="T;-40;0" end_position="T;-40;0" target="A" general_return_time="1.3"></item>
+        </attack>
+        
+        <!--飞行-->
+		<fly>
+			 <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+		
+        <!--命中-->
+        <arm>
+	         <item id="1301" effect_file="dianwei_" music_file="dianwei4.mp3" effect_file_num="13" start_time="0" start_position="T;0;0" end_position="T;0;0" shock_start_time="0.5"></item>
+	         <item id="1302" start_time="0.8" target="T" drop_blood="100"></item>
+        </arm> 
+    </skill>
+	
+	<!--马超-->
+    <skill id ="29010010"  target_type="4">
+        <!--移动-->
+		 <move>
+             <item id="1001" effect_file="maochao01s_" effect_file_num="5" speed="1200" start_position="A;0;0" end_position="T;-110;0" target="A" music_file="machao4.mp3"></item>
+		 </move>
+		
+		<!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="machao_" effect_file_num="15"
+    			 start_time="0" start_position="T;70;0" end_position="T;70;0" target="A" general_return_time="1.6"></item>
+        </attack>
+        
+        <!--飞行-->
+		<fly>
+			 <item id="1401"
+			     next_id_taget="1302"></item>
+			 <item id="1402"
+			     next_id_taget="1304"></item>
+			 <item id="1403"
+			     next_id_taget="1306"></item>
+        </fly>
+		
+        <!--命中-->
+        <arm>
+	         <item id="1302" start_time="0.4" target="T" drop_blood="20"></item>
+	         <item id="1304" start_time="0.9" target="T" drop_blood="20" splash_picture="jianxue" splash_start_time="0.8"></item>
+			 <item id="1306" start_time="1.6" target="T" drop_blood="60"></item>
+        </arm>
+    </skill>
+	
+<!--剩下 40 +1个 武将技能 特效-->
+
+	<!--关羽 技能 关羽模型 近战 横排 （幻影移动 剑气横排 ） * -->
+    <skill id ="29011001"  target_type="4">
+        <!--移动-->
+		 <move>
+             <item id="1001" effect_file="guanyu01_" music_file="huanying.mp3" effect_file_num="1" speed="700" start_time="0" start_position="A;0;0" end_position="T;-125;0" target="A"></item>
+        </move>
+		
+		<!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="guanyu01s_" effect_file_num="13" start_time="0" start_position="A;0;0" end_position="A;0;0" target="A" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+		<fly>
+			 <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+		
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="jianqi44GG_" music_file="jianqi.mp3" effect_file_num="14" start_time="0.6" start_position="T;0;0" shock_start_time="0.9"></item>
+             <item id="1302" start_time="0.8" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+		
+	<!--夏侯惇 技能 夏侯惇模型 远程 随机目标及周围 （冰刺单体） -->
+	<skill id ="29011006" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="leiyun21GG_" music_file="leiyun.mp3" effect_file_num="6" start_time="0.4"></item>
+		     <item id="1102" effect_file="xiahoudun01s_" music_file="lagongshejian.mp3" music_start_time="0.4" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1201" effect_file="daqiaofeixing1_" effect_file_num="4" start_time="0.9" speed="1000" start_position="A;0;0" end_position="T;0;0"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="bingci41GG_" music_file="bingci.mp3" effect_file_num="10" start_time="0" start_position="T;0;0" ></item>
+             <item id="1302" start_time="0.6" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--小乔 （ 夏侯涓 ）技能 小乔模型 谋士 己方提升怒气 全体（施法：光圈扩散）-->
+	<skill id ="29011007" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="guangquankuosan42GG_" music_file="guangquankuosan" effect_file_num="7" start_time="0.7"></item>
+		     <item id="1102" effect_file="xiaoqiao01s_" effect_file_num="16" start_time="0" general_return_time="1.7"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1302" effect_file_num="0" target="T"></item>
+        </arm>
+    </skill>
+	
+	<!--貂蝉 （ 王异 ）技能 貂蝉模型 谋士 单体减怒气 （飞轮单体） -->
+	<skill id ="29011009" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="diaocan01s_" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1201" effect_file="feilun31GG_" effect_file_num="3" start_time="0.6" speed="1000" start_position="A;0;0" end_position="T;0;0"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="feilunxuan41GG_" music_file="feilun.mp3" effect_file_num="12" start_time="0" start_position="T;0;0" ></item>
+             <item id="1302" start_time="0.7" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--黄忠 技能 黄忠模型 远程 全体 （枪雨全体） -->
+	<skill id ="29011010" target_type="2">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="huoxuanwo22GG_" music_file="huoxuanwo.mp3" effect_file_num="10" start_time="0"></item>
+		     <item id="1102" effect_file="huangzhong01s_" music_file="lagongshejian.mp3" music_start_time="0.4" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1211" effect_file="caocaofeixing_" effect_file_num="3" start_time="1" speed="700" start_position="A;15;15" end_position="A;85;415"></item>
+			 <item id="1212" effect_file="guangqiang31GG_" effect_file_num="4" start_time="1.1" speed="700" start_position="A;15;15" end_position="A;85;415" start_opacity="180" end_opacity="180"></item>
+			 <item id="1213" effect_file="guangqiang31GG_" effect_file_num="4" start_time="1.2" speed="700" start_position="A;15;15" end_position="A;85;415" start_opacity="180" end_opacity="180"></item>
+			 <item id="1214" effect_file="guangqiang31GG_" effect_file_num="4" start_time="1.3" speed="700" start_position="A;15;15" end_position="A;85;415" start_opacity="180" end_opacity="180"></item>
+			 <item id="1215" effect_file="guangqiang31GG_" effect_file_num="4" start_time="1.4" speed="700" start_position="A;15;15" end_position="A;85;415" start_opacity="180" end_opacity="180"
+			     next_id="1301" next_id_taget="1302"></item>
+	 
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="qiangyu42GG_" music_file="qiangyu.mp3" effect_file_num="19" start_time="0" start_position="T;-40;55" end_position="T;-40;55"></item>
+             <item id="1302" start_time="1" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--张飞 技能 张飞模型 近战 随机单体 （张飞蛇矛单体） * -->
+	<skill id ="29011011"  target_type="1">
+	    <!--移动-->
+		<move>
+             <item id="1001" effect_file="zhangfei01_" effect_file_num="13" speed="800" start_position="A;0;0" end_position="T;-35;0"></item>
+        </move>
+		
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="baozha21GG_" music_file="baozha2.mp3" effect_file_num="6" start_time="0.1"></item>
+		     <item id="1101" effect_file="zhangfei41GG_" music_file="zhangfeishemao.mp3" effect_file_num="16" start_time="0.15" start_position="A;20;0" start_scale="2.2" end_scale="2.7"></item>
+             <item id="1102" effect_file="zhangfei01s_" effect_file_num="13" start_time="0"  target="A" general_return_time="2"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401" next_id_taget="1302"></item>
+			 <item id="1404" next_id_taget="1308"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1302" start_time="0.4" drop_blood="50"></item>
+			 <item id="1308" start_time="1.2" drop_blood="50"></item>
+        </arm>
+    </skill>
+
+	<!--许褚 技能 许褚模型 近战 随机目标及周围 （刀光单体） -->
+	<skill id ="29011015"  target_type="1">
+	    <!--移动-->
+		
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="baozha21GG_" music_file="baozha2.mp3" effect_file_num="6" start_time="0.2"></item>
+             <item id="1102" effect_file="xuchu01s_" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="daoguang41GG_" music_file="daoguang.mp3" effect_file_num="6" start_time="0.9" start_position="T;0;0"></item>
+             <item id="1302" start_time="1.1" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--孙策 技能 孙策模型 远程 竖排 （龙形单体） -->
+	<skill id ="29011016" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="huoxuanwo22GG_" music_file="huoxuanwo.mp3" effect_file_num="10" start_time="0"></item>
+		     <item id="1102" effect_file="sunce01s_" music_file="lagongshejian.mp3" music_start_time="0.2" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1201" effect_file="longxing44GG_" effect_file_num="10" start_time="0.8" speed="300" start_position="A;100;0" end_position="T;-50;0" start_scale="2" end_scale="1"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="longxing43GG_" music_file="longxing.mp3" effect_file_num="10" start_time="0" start_position="T;0;0" ></item>
+             <item id="1302" start_time="0.7" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--刘备 技能 刘备模型 近战 自己及周围加法防 （光圈扩散）-->
+	<skill id ="29011017" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="guangquankuosan42GG_" music_file="guangquankuosan" effect_file_num="7" start_time="0.8"></item>
+		     <item id="1102" effect_file="liubei01s_" effect_file_num="16" start_time="0" general_return_time="1.7"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1302" effect_file_num="0" target="T"></item>
+        </arm>
+    </skill>
+	
+	<!--孙坚 技能 孙坚模型 远程 横排 （龙形横排）-->
+	<skill id ="29011019" target_type="4">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="qiangcijuqi21GG_" music_file="qiangcijuqi.mp3" effect_file_num="13" start_time="0"></item>
+		     <item id="1102" effect_file="sunjian01s_" music_file="lagongshejian.mp3" music_start_time="0.5" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1201" effect_file="guangqiang31GG_" effect_file_num="4" start_time="1.1" speed="600" start_position="A;0;0" end_position="T;-125;0" start_opacity="255" end_opacity="50"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="longxing44GG_" music_file="longxing.mp3" effect_file_num="10" start_time="0" start_position="T;0;0" ></item>
+             <item id="1302" start_time="0.7" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+		
+	<!--吴国太 （ 孙尚香 ） 技能 织女模型 谋士 全体加血 （加血单体）-->
+	<skill id ="29011020" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="zengyi21GG_" music_file="zengyi2.mp3" effect_file_num="13" start_time="0"></item>
+		     <item id="1102" effect_file="zhinv01s_" effect_file_num="16" start_time="0.1" general_return_time="1.8"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			    next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="jiaxue41GG_" music_file="jiaxue.mp3" effect_file_num="13" start_time="1.3" start_position="T;0;0" ></item>
+             <item id="1302" effect_file_num="0" start_time="1.4" target="T" drop_blood="100"></item>
+        </arm>
+	</skill>
+	
+	<!--吕蒙 技能 孙坚模型 远程 单体 （向天一箭从天而降）-->
+	<skill id ="29011021" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="qiangcijuqi21GG_" music_file="qiangcijuqi.mp3" effect_file_num="13" start_time="0"></item>
+		     <item id="1102" effect_file="sunjian01s_" music_file="lagongshejian.mp3" music_start_time="0.5" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1201" effect_file="caocaofeixing_" effect_file_num="3" start_time="1.1" speed="150" start_position="A;0;0" end_position="A;50;0"
+				 next_id="0" next_id_taget="0"></item>
+			 <item id="1202" effect_file="caocaofeixing_" effect_file_num="3" start_time="1.45" speed="1000" start_position="A;50;8" end_position="A;50;408" start_opacity="255" end_opacity="0" start_scale="2" end_scale="1"
+				 next_id="0" next_id_taget="0"></item>
+			 <item id="1203" effect_file="caocaofeixing_" effect_file_num="3" start_time="1.85" speed="1000" start_position="T;0;408" end_position="T;0;0" start_scale="2" end_scale="3"
+			     next_id="1301" next_id_taget="1302"></item>
+			 <item id="1401"
+			     next_id="1303" next_id_taget="0"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+		     <item id="1301" effect_file="caocaomingzhong_" music_file="caocao4.mp3" effect_file_num="10" start_time="0"></item>
+             <item id="1302" start_time="0.7" target="T" drop_blood="100"></item>
+			 <item id="1303" effect_file="caocaomingzhong2_" effect_file_num="12" start_time="2"></item>
+        </arm>
+    </skill>
+	
+	<!--太史慈 技能 刘备模型 近战 横排 （剑气横排） -->
+	<skill id ="29011022" target_type="4">
+	    <!--移动-->
+
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="baozha21GG_" music_file="baozha2.mp3" effect_file_num="6" start_time="0.2"></item>
+		     <item id="1102" effect_file="liubei01s_" effect_file_num="16" start_time="0" general_return_time="1.7"></item>
+        </attack>
+		
+        <!--飞行-->
+		<fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+		
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="jianqi44GG_" music_file="jianqi.mp3" effect_file_num="14" start_time="0.9" start_position="T;0;0" ></item>
+             <item id="1302" start_time="0.6" target="T" drop_blood="100"></item>
+        </arm>
+        
+        <music>
+             <item id="2001"></item>
+        </music>
+    </skill>
+	
+	<!--袁绍 技能 孙坚模型 己方提升怒气 横排 （施法火漩涡） -->
+	<skill id ="29011023" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="huoxuanwo22GG_" music_file="huoxuanwo.mp3" effect_file_num="10" start_time="0"></item>
+		     <item id="1102" effect_file="sunjian01s_" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1302" effect_file_num="0" target="T"></item>
+        </arm>
+    </skill>
+	
+	<!--张角 技能 司马懿（ 王朗 ）模型 谋士 随机目标及周围 （冰锥单体） -->
+	<skill id ="29011024" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="leiyun21GG_" music_file="leiyun.mp3" effect_file_num="6" start_time="0.3"></item>
+		     <item id="1102" effect_file="wanglang01s_" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+		     <item id="1301" effect_file="bingzhui41GG_" music_file="bingzhui.mp3" effect_file_num="18" start_time="1"></item>
+             <item id="1302" start_time="1.8" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--庞统 技能 牛郎模型 谋士 单体 （加血单体） -->
+	<skill id ="29011025" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="zengyi21GG_" music_file="zengyi2.mp3" effect_file_num="13" start_time="0"></item>
+		     <item id="1102" effect_file="niulang01s_" effect_file_num="13" start_time="0.3" general_return_time="1.7"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			    next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="jiaxue41GG_" music_file="jiaxue.mp3" effect_file_num="13" start_time="1.3" start_position="T;0;0" ></item>
+             <item id="1302" effect_file_num="0" start_time="2.1" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--张辽 技能 孙策模型 远程 横排 （光枪爆单体） -->
+	<skill id ="29011026" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="huoxuanwo22GG_" music_file="huoxuanwo.mp3" effect_file_num="10" start_time="0"></item>
+		     <item id="1102" effect_file="sunce01s_" music_file="lagongshejian.mp3" music_start_time="0.2" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1201" effect_file="guangqiang31GG_" effect_file_num="4" start_time="0.8" speed="1000" start_position="A;0;0" end_position="T;0;0"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="guangqiangbao41GG_" music_file="guangqiangbao.mp3" effect_file_num="17" start_time="0" start_position="T;0;0" ></item>
+             <item id="1302" start_time="0.4" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--甘宁 技能 孙坚模型 远程 竖排 （光枪爆单体） -->
+	<skill id ="29011027" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="leiyun21GG_" music_file="leiyun.mp3" effect_file_num="6" start_time="0.5"></item>
+		     <item id="1102" effect_file="sunjian01s_" music_file="lagongshejian.mp3" music_start_time="0.5" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1201" effect_file="guangqiang31GG_" effect_file_num="4" start_time="0.8" speed="1000" start_position="A;0;0" end_position="T;0;0"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="guangqiangbao41GG_" music_file="guangqiangbao.mp3" effect_file_num="17" start_time="0" start_position="T;0;0" ></item>
+             <item id="1302" start_time="0.4" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--陆逊 技能 笔谋模型 谋士 全体 （火流星80%（*1.3）全体） -->
+    <skill id ="29011028"  target_type="2">
+	    <!--移动-->
+				
+        <!--攻击-->
+		<attack>
+		     <item id="1102" effect_file="bimou01s1_" effect_file_num="26" start_time="0" general_return_time="2.7"></item>
+        </attack>
+		
+		<!--飞行-->
+        <fly>
+             <item id="1401"
+			    next_id="1301" next_id_taget="1302"></item>
+        </fly>
+         
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="huoliuxing42GG_" music_file="huoliuxing.mp3" effect_file_num="13" 
+			     start_time="1" start_position="T;-125;121" end_position="T;-125;121" start_scale="1.8" end_scale="1.8" shock_start_time="1.4"></item>
+             <item id="1302" start_time="1.7" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--颜良 技能 锤步模型 近战 前排 （单体175%环爆） -->
+	<skill id ="29011029" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+		<attack>
+		     <item id="1101" effect_file="qiangcijuqi21GG_" music_file="qiangcijuqi.mp3" effect_file_num="13" start_time="0.4"></item>
+		     <item id="1102" effect_file="chuibu01s1_" effect_file_num="23" start_time="0" general_return_time="2.4"></item>
+        </attack>
+		
+		<!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+			 <item id="1402"
+			     next_id_taget="1304"></item>
+        </fly>
+         
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="huanbao41GG_" music_file="huanbao.mp3" effect_file_num="11" start_time="0.7" start_position="T;0;0" start_scale="3.5" end_scale="3.5"></item>
+             <item id="1302" effect_file_num="0" start_time="0.9" target="T" drop_blood="50"></item>
+			 <item id="1304" effect_file_num="0" start_time="1.6" target="T" drop_blood="50"></item>
+        </arm>
+    </skill>
+	
+	<!--文丑 技能 许褚模型 近战 横排 （枪刺横排） -->
+	<skill id ="29011030"  target_type="4">
+	    <!--移动-->
+		
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="qiangcijuqi21GG_" music_file="qiangcijuqi.mp3" effect_file_num="13" start_time="0"></item>
+             <item id="1102" effect_file="xuchu01s_" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="qiangci41GG_" music_file="qiangci.mp3" effect_file_num="14" start_time="0.9" start_position="T;0;0"></item>
+             <item id="1302" start_time="1.3" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--庞德 技能 斧骑模型 近战 目标及周围 （原地刀光单体） -->
+	<skill id ="29011031"  target_type="1">
+	    <!--移动-->
+		
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="baozha21GG_" music_file="baozha2.mp3" effect_file_num="6" start_time="0.3"></item>
+             <item id="1102" effect_file="fuqi01s1_" effect_file_num="16" start_time="0" general_return_time="1.7"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="daoguang41GG_" music_file="daoguang.mp3" effect_file_num="6" start_time="1" start_position="T;0;0"></item>
+             <item id="1302" start_time="1.4" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--黄月英 （ 辛宪英 ） 技能 小乔模型 谋士 全体加血 （特效单体） -->
+	<skill id ="29011032" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="zengyi21GG_" music_file="zengyi2.mp3" effect_file_num="13" start_time="0"></item>
+		     <item id="1102" effect_file="xiaoqiao01s_" effect_file_num="16" start_time="0.4" general_return_time="1.8"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			    next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="jiaxue41GG_" music_file="jiaxue.mp3" effect_file_num="13" start_time="1.3" start_position="T;0;0" ></item>
+             <item id="1302" effect_file_num="0" start_time="1.4" target="T" drop_blood="100"></item>
+        </arm>
+  	</skill>
+	
+	<!--姜维 技能 马超模型 近战 横排 （枪刺横排） -->
+	<skill id ="29011033"  target_type="4">
+        <!--移动-->
+		 <move>
+             <item id="1001" effect_file="maochao01s_" effect_file_num="13" speed="700" start_time="0" start_position="A;0;0" end_position="T;-110;0" target="A" start_opacity="255" end_opacity="30"></item>
+		 </move>
+		
+		<!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="maochao01s_" effect_file_num="1" start_time="0" start_position="T;-110;0" end_position="T;-110;0" target="A" start_opacity="0" hide_self="1" general_return_time="1.5"></item>
+        </attack>
+        
+        <!--飞行-->
+		<fly>
+			 <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+		
+        <!--命中-->
+        <arm>
+		     <item id="1301" effect_file="qiangci41GG_" music_file="qiangci.mp3" effect_file_num="14" start_time="0" start_position="T;0;0" splash_picture="jianxue" splash_start_time="0.4"></item>
+	         <item id="1302" start_time="0.4" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--徐庶 技能 笔谋模型 谋士 全体 （冰旋风全体） -->
+	<skill id ="29011034" target_type="2">
+	    <!--移动-->
+				
+        <!--攻击-->
+		<attack>
+		     <item id="1102" effect_file="bimou01s1_" effect_file_num="26" start_time="0" general_return_time="2.7"></item>
+        </attack>
+		
+		<!--飞行-->
+        <fly>
+             <item id="1401"
+			    next_id="1301" next_id_taget="1302"></item>
+        </fly>
+         
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="bingxuanfeng42GG_" music_file="bingxuanfeng.mp3" effect_file_num="22" start_time="1" start_position="T;0;0"></item>
+             <item id="1302" start_time="2.5" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--魏延 技能 锤步模型 近战 竖排 （单体光枪爆2次） -->
+	<skill id ="29011035" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+		<attack>
+		     <item id="1101" effect_file="qiangcijuqi21GG_" music_file="qiangcijuqi.mp3" effect_file_num="13" start_time="0.4"></item>
+		     <item id="1102" effect_file="chuibu01s1_" effect_file_num="23" start_time="0" general_return_time="2.4"></item>
+        </attack>
+		
+		<!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+			 <item id="1402"
+			     next_id="1303" next_id_taget="1304"></item>
+        </fly>
+         
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="guangqiangbao41GG_" music_file="guangqiangbao.mp3" effect_file_num="8" start_time="0.7" start_position="T;0;0"></item>
+             <item id="1302" effect_file_num="0" start_time="0.7" target="T" drop_blood="50"></item>
+			 <item id="1301" effect_file="guangqiangbao41GG_" music_file="guangqiangbao.mp3" effect_file_num="8" start_time="1.5" start_position="T;0;0" ></item>
+			 <item id="1304" effect_file_num="0" start_time="1.5" target="T" drop_blood="50"></item>
+        </arm>
+    </skill>
+	
+	<!--张郃 技能 刀骑模型 近战 后排单体 （冰刺单体） -->
+	<skill id ="29011036"  target_type="1">
+	    <!--移动-->
+		<move>
+             <item id="1001" effect_file="daoqi01s_" effect_file_num="1" speed="900" start_time="0" start_position="A;0;0" end_position="T;-45;0" target="A"></item>
+			 <item id="1002" effect_file="leiyun21GG_" music_file="leiyun.mp3" effect_file_num="6" start_time="0"></item>
+		 </move>
+		
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="leiyun21GG_" effect_file_num="6" start_time="0.2"></item>
+             <item id="1102" effect_file="daoqi01s1_" effect_file_num="17" start_time="0" general_return_time="1.8"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="bingci41GG_" music_file="bingci.mp3" effect_file_num="10" start_time="0.9" start_position="T;0;0"></item>
+             <item id="1302" start_time="1.6" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--夏侯渊 夏侯惇模型 远程 己方后排加攻击力 （施法火漩涡） -->
+	<skill id ="29011037" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+	      	 <item id="1101" effect_file="huoxuanwo22GG_" music_file="huoxuanwo.mp3" effect_file_num="10" start_time="0"></item>
+		     <item id="1102" effect_file="xiahoudun01s_" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1302" effect_file_num="0" target="T"></item>
+        </arm>
+    </skill>
+	
+	<!--步练师 （甄宓） 技能 貂蝉模型 谋士 竖排 （单体火焰50%） -->
+	<skill id ="29011038" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="huoxuanwo22GG_" music_file="huoxuanwo.mp3" effect_file_num="10" start_time="0"></item>
+		     <item id="1102" effect_file="diaocan01s_" effect_file_num="13" start_time="0.3" general_return_time="1.7"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1201" effect_file="huoyan41GG_" effect_file_num="20" start_time="0.6" speed="1000" start_position="A;0;0" end_position="T;0;0"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="huoyan41GG_" music_file="huoyan.mp3" effect_file_num="20" start_time="0" start_position="T;0;0" start_scale="0.5" end_scale="0.5"></item>
+             <item id="1302" start_time="1" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--贾诩 技能 郭嘉模型 谋士 后排单体 （单体闪电175%） -->
+	<skill id ="29011039" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="leiyun21GG_" music_file="leiyun.mp3" effect_file_num="6" start_time="0.2"></item>
+		     <item id="1102" effect_file="guojia01s_" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+		     <item id="1301" effect_file="luolei41GG_" music_file="luolei.mp3" effect_file_num="8" start_time="0.9" start_position="T;0;135" end_position="T;0;135" start_scale="3.5" end_scale="3.5"></item>
+             <item id="1302" start_time="1.2" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--周泰 技能 刀骑模型 近战 随机目标及周围 （刀光单体） -->
+	<skill id ="29011040"  target_type="1">
+	    <!--移动-->
+		
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="qiangcijuqi21GG_" music_file="qiangcijuqi.mp3" effect_file_num="13" start_time="0.2"></item>
+             <item id="1102" effect_file="daoqi01s1_" effect_file_num="17" start_time="0" general_return_time="1.8"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="daoguang41GG_" music_file="daoguang.mp3" effect_file_num="6" start_time="1" start_position="T;0;0"></item>
+             <item id="1302" start_time="1.2" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--孙权 技能 刘备模型 近战 全体 （藏刀斩全体） -->
+	<skill id ="29011041" target_type="2">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="liubei01s_" effect_file_num="16" start_time="0" general_return_time="1.7"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+		     <item id="1301" effect_file="cangdaozhan42GG_" music_file="cangdaozhan.mp3" effect_file_num="17"
+      			 start_time="0.9" start_position="T;-36;0" end_position="T;-36;0" splash_picture="jianxue" splash_start_time="1.2"></item>
+             <item id="1302" effect_file_num="2.2" target="T"></item>
+        </arm>
+    </skill>
+	
+	<!--孟获 技能 孙策模型 远程 全体 （施法大字爆前4帧） （火焰单体） -->
+	<skill id ="29011042" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="dazibao42GG_" effect_file_num="4" start_time="0.4" start_position="A;12;0"></item>
+		     <item id="1102" effect_file="sunce01s_" music_file="lagongshejian.mp3" music_start_time="0.2" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1201" effect_file="daqiaofeixing2_" effect_file_num="4" start_time="0.8" speed="1000" start_position="A;0;0" end_position="T;0;0"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="huoyan41GG_" music_file="huoyan.mp3" effect_file_num="20" start_time="0" start_position="T;0;0" ></item>
+             <item id="1302" start_time="0.8" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--法正 技能 郭嘉模型 谋士 前排单体 （绿色火焰单体） -->
+    <skill id ="29011043"  target_type="1">
+        <!--移动-->
+		
+		<!--攻击-->
+        <attack>
+             <item id="1101" effect_type="1" effect_file="guojiashifa_" music_file="guojia2.mp3" effect_file_num="15" start_time="0.3" start_scale="1.7" end_scale="1.7"></item>
+             <item id="1102" effect_type="1" effect_file="guojia01s1_" effect_file_num="13" start_time="0" target="A" general_return_time="2"></item>
+        </attack>
+         
+        <!--飞行-->
+		<fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+		
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="lvsehuoyan41GG_" music_file="huoyan.mp3" effect_file_num="9" start_time="1"></item>
+	         <item id="1302" start_time="1.5" drop_blood="100"></item>
+         </arm> 
+    </skill>
+	
+	<!--荀彧 技能 笔谋模型 谋士 全体加血 （特效单体） -->
+	<skill id ="29011044" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+		<attack>
+		     <item id="1101" effect_file="zengyi21GG_" music_file="zengyi2.mp3" effect_file_num="13" start_time="0"></item>
+		     <item id="1102" effect_file="bimou01s1_" effect_file_num="26" start_time="0" general_return_time="2.7"></item>
+        </attack>
+		
+		<!--飞行-->
+        <fly>
+             <item id="1401"
+			    next_id="1301" next_id_taget="1302"></item>
+        </fly>
+         
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="jiaxue41GG_" music_file="jiaxue.mp3" effect_file_num="13" start_time="1.3" start_position="T;0;0"></item>
+             <item id="1302" effect_file_num="0" start_time="1.4" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--张昭 技能 司马懿（ 王朗 ）模型 谋士 横排 （冰刺75%单体） -->
+	<skill id ="29011045" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="leiyun21GG_" music_file="leiyun.mp3" effect_file_num="6" start_time="0.3"></item>
+		     <item id="1102" effect_file="wanglang01s_" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+		     <item id="1301" effect_file="bingci41GG_" music_file="bingci.mp3" effect_file_num="10" start_time="1" start_scale="1.5" end_scale="1.5"></item>
+             <item id="1302" start_time="1.8" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--文鸯 技能 斧骑模型 近战 横排 （藏刀单体） -->
+	<skill id ="29011046" target_type="1">
+	    <!--移动-->
+		
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="qiangcijuqi21GG_" music_file="qiangcijuqi.mp3" effect_file_num="13" start_time="0.2"></item>
+             <item id="1102" effect_file="fuqi01s1_" effect_file_num="16" start_time="0" general_return_time="1.7"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="cangdao22GG_" music_file="cangdao.mp3" effect_file_num="12" start_time="0.9" start_position="T;0;0"></item>
+             <item id="1302" start_time="1.5" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--马岱 技能 马超模型 近战 竖列 （剑气竖列）-->
+	<skill id ="29011047" target_type="3">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="baozha21GG_" music_file="baozha2.mp3" effect_file_num="6" start_time="0.3"></item>
+		     <item id="1102" effect_file="daoqi01s1_" effect_file_num="17" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+			 <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="jianqi43GG_" music_file="jianqi.mp3" effect_file_num="14" start_time="0.9" start_position="T;30;0" start_rotation="20"></item>
+             <item id="1302" start_time="1.5" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--潘凤 （徐晃）技能 夏侯惇模型 远程 单体 （落雷单体）-->
+	<skill id ="29011048" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="leiyun21GG_" music_file="leiyun.mp3" effect_file_num="6" start_time="0.3"></item>
+		     <item id="1102" effect_file="xiahoudun01s_" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>b
+        
+        <!--飞行-->
+        <fly>
+             <item id="1201" effect_file="caocaofeixing_" effect_file_num="3" start_time="0.9" speed="1000" start_position="A;0;0" end_position="T;0;0"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="luolei41GG_" music_file="luolei.mp3" effect_file_num="8" start_time="0.2" start_position="T;0;60" end_position="T;0;60"></item>
+             <item id="1302" start_time="0.5" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--曹仁 技能 锤步模型 近战 竖排 （单体普攻爆炸2次） -->
+	<skill id ="29011049" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+		<attack>
+		     <item id="1101" effect_file="baozha21GG_" music_file="baozha2.mp3" effect_file_num="6" start_time="0.1"></item>
+		     <item id="1102" effect_file="chuibu01s1_" effect_file_num="23" start_time="0" general_return_time="2.4"></item>
+        </attack>
+		
+		<!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+			 <item id="1402"
+			     next_id="1303" next_id_taget="1304"></item>
+        </fly>
+         
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="baozha41GG_" music_file="baozha4.mp3" effect_file_num="6" start_time="0.7" start_position="T;0;0"></item>
+             <item id="1302" effect_file_num="0" start_time="0.7" target="T" drop_blood="50"></item>
+			 <item id="1301" effect_file="baozha41GG_" music_file="baozha4.mp3" effect_file_num="6" start_time="1.5" start_position="T;0;0"></item>
+			 <item id="1304" effect_file_num="0" start_time="1.5" target="T" drop_blood="50"></item>
+        </arm>
+    </skill>
+		
+	<!--魔关羽 技能 魔关羽模型 近战 单体 （光枪+落雷冰刺命中） * -->
+    <skill id ="29011050"  target_type="1">
+        <!--移动-->
+		 <move>
+             <item id="1001" effect_file="moguanyu01_" music_file="huanying.mp3" effect_file_num="1" speed="700" start_time="0" start_position="A;0;0" end_position="T;-30;0" target="A"></item>
+        </move>
+		
+		<!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="moguanyu01s_" effect_file_num="13" start_time="0" start_position="A;0;0" end_position="A;0;0" target="A" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+		<fly>
+			 <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+			 <item id="1402"
+			     next_id="1303" next_id_taget="1304"></item> 
+			 <item id="1403"
+			     next_id="1305" next_id_taget="0"></item> 	 
+        </fly>
+		
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="qiangci41GG_" music_file="qiangci.mp3" effect_file_num="14" start_time="0.6" start_position="T;0;0" shock_start_time="0.9"></item>
+             <item id="1302" start_time="0.9" target="T" drop_blood="70"></item>
+			 <item id="1303" effect_file="bingzhui41GG_" music_file="bingzhui.mp3" effect_file_num="12" start_time="1"></item>
+             <item id="1304" start_time="1.5" target="T" drop_blood="30"></item>
+			 <item id="1305" effect_file="luolei41GG_" music_file="luolei.mp3" effect_file_num="8" start_time="1.3" start_position="T;0;60" end_position="T;0;60"></item>
+        </arm>
+    </skill>
+	
+<!--22+4+1个 武将模型 普攻特效-->
+	
+	<!--曹操 模型 近战 普通攻击-->
+	<skill id ="29020001" target_type="1">
+	    <!--移动-->
+		<move>
+             <item id="1001" effect_file="caocao01_" effect_file_num="1" speed="800" start_position="A;0;0" end_position="T;-45;0" target="A"></item>
+        </move>
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="baozha21GG_" effect_file_num="6" start_time="0.1"></item>
+		     <item id="1102" effect_file="caocao01s_" effect_file_num="13" start_time="0" general_return_time="1.3"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="baozha41GG_" music_file="baozha4.mp3" effect_file_num="6" start_time="0.7" start_position="T;0;0" start_scale="1.8" end_scale="1.8"></item>
+             <item id="1302" start_time="0.8" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--大乔 模型 谋士 普通攻击-->
+	<skill id ="29020002" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="daqiao01s_" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1201" effect_file="ziyandan31GG_" effect_file_num="3" start_time="0.7" speed="1000" start_position="A;0;0" end_position="T;0;0" start_scale="1.8" end_scale="1.8"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="ziyanbao41GG_" music_file="ziyanbao.mp3" effect_file_num="12" start_time="0" start_position="T;0;0" start_scale="1.8" end_scale="1.8"></item>
+             <item id="1302" start_time="0.2" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--典韦 模型 近战 普通攻击-->
+	<skill id ="29020003" target_type="1">
+	    <!--移动-->
+		<move>
+             <item id="1001" effect_file="dianwei01_" effect_file_num="1" speed="800" start_position="A;0;0" end_position="T;-45;0" target="A"></item>
+        </move>
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="baozha21GG_" effect_file_num="6" start_time="0.1"></item>
+		     <item id="1102" effect_file="dianwei01s_" effect_file_num="16" start_time="0" general_return_time="1.7"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="baozha41GG_" music_file="baozha4.mp3" effect_file_num="6" start_time="0.7" start_position="T;0;0" start_scale="1.8" end_scale="1.8"></item>
+             <item id="1302" start_time="1" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--貂蝉 模型 谋士 普通攻击-->
+	<skill id ="29020004" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="diaocan01s_" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1201" effect_file="ziyandan31GG_" effect_file_num="3" start_time="0.5" speed="1000" start_position="A;0;0" end_position="T;0;0" start_scale="1.8" end_scale="1.8"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="ziyanbao41GG_" music_file="ziyanbao.mp3" effect_file_num="12" start_time="0" start_position="T;0;0" start_scale="1.8" end_scale="1.8"></item>
+             <item id="1302" start_time="0.2" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--关羽 模型 近战 普通攻击-->
+	<skill id ="29020005" target_type="1">
+	    <!--移动-->
+		<move>
+             <item id="1001" effect_file="guanyu01_" effect_file_num="1" speed="800" start_position="A;0;0" end_position="T;-45;0" target="A"></item>
+        </move>
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="baozha21GG_" effect_file_num="6" start_time="0.1"></item>
+		     <item id="1102" effect_file="guanyu01s_" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="baozha41GG_" music_file="baozha4.mp3" effect_file_num="6" start_time="0.7" start_position="T;0;0" start_scale="1.8" end_scale="1.8"></item>
+             <item id="1302" start_time="0.9" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+		
+	<!--郭嘉 模型 谋士 普通攻击-->
+	<skill id ="29020006" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="guojia01s_" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1201" effect_file="ziyandan31GG_" effect_file_num="3" start_time="0.7" speed="1000" start_position="A;0;0" end_position="T;0;0" start_scale="1.8" end_scale="1.8"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="ziyanbao41GG_" music_file="ziyanbao.mp3" effect_file_num="12" start_time="0" start_position="T;0;0" start_scale="1.8" end_scale="1.8"></item>
+             <item id="1302" start_time="0.2" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--黄忠 模型 远程 普通攻击-->
+	<skill id ="29020007" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="huangzhong01s_" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1201" effect_file="caocaofeixing_" effect_file_num="3" start_time="0.9" speed="1000" start_position="A;0;0" end_position="T;0;0"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="caocaomingzhong_" music_file="guangqiangbao.mp3" effect_file_num="10" start_time="0" start_position="T;0;0" start_scale="1.8" end_scale="1.8"></item>
+             <item id="1302" start_time="0.1" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--刘备 模型 近战 普通攻击-->
+	<skill id ="29020008" target_type="1">
+	    <!--移动-->
+		<move>
+             <item id="1001" effect_file="liubei01_" effect_file_num="1" speed="800" start_position="A;0;0" end_position="T;-45;0" target="A"></item>
+        </move>
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="baozha21GG_" effect_file_num="6" start_time="0.1"></item>
+		     <item id="1102" effect_file="liubei01s_" effect_file_num="16" start_time="0" general_return_time="1.7"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="baozha41GG_" music_file="baozha4.mp3" effect_file_num="6" start_time="0.7" start_position="T;0;0" start_scale="1.8" end_scale="1.8"></item>
+             <item id="1302" start_time="0.9" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--吕布 模型 近战 普通攻击-->
+	<skill id ="29020009" target_type="1">
+	    <!--移动-->
+		<move>
+             <item id="1001" effect_file="lvbu01_" effect_file_num="1" speed="800" start_position="A;0;0" end_position="T;-45;0" target="A"></item>
+        </move>
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="baozha21GG_" effect_file_num="6" start_time="0.1"></item>
+		     <item id="1102" effect_file="lvbu01s_" effect_file_num="13" start_time="0" general_return_time="1.3"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="baozha41GG_" music_file="baozha4.mp3" effect_file_num="6" start_time="0.6" start_position="T;0;0" start_scale="1.8" end_scale="1.8"></item>
+             <item id="1302" start_time="0.8" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--马超 模型 近战 普通攻击-->
+	<skill id ="29020010" target_type="1">
+	    <!--移动-->
+		<move>
+             <item id="1001" effect_file="maochao01_" effect_file_num="1" speed="800" start_position="A;0;0" end_position="T;-45;0" target="A"></item>
+        </move>
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="baozha21GG_" effect_file_num="6" start_time="0"></item>
+		     <item id="1102" effect_file="maochao01s_" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="baozha41GG_" music_file="baozha4.mp3" effect_file_num="6" start_time="0.6" start_position="T;0;0" start_scale="1.8" end_scale="1.8"></item>
+             <item id="1302" start_time="0.9" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--牛郎 模型 谋士 普通攻击-->
+	<skill id ="29020011" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="niulang01s_" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1201" effect_file="ziyandan31GG_" effect_file_num="3" start_time="0.8" speed="1000" start_position="A;0;0" end_position="T;0;0" start_scale="1.8" end_scale="1.8"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="ziyanbao41GG_" music_file="ziyanbao.mp3" effect_file_num="12" start_time="0" start_position="T;0;0" start_scale="1.8" end_scale="1.8"></item>
+             <item id="1302" start_time="0.2" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--司马懿 （王朗）模型 远程 普通攻击-->
+	<skill id ="29020012" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="wanglang01s_" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1201" effect_file="ziyandan31GG_" effect_file_num="3" start_time="0.8" speed="1000" start_position="A;0;0" end_position="T;0;0" start_scale="1.8" end_scale="1.8"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="ziyanbao41GG_" music_file="ziyanbao.mp3" effect_file_num="12" start_time="0" start_position="T;0;0" start_scale="1.8" end_scale="1.8"></item>
+             <item id="1302" start_time="0.2" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--孙策 模型 远程 普通攻击-->
+	<skill id ="29020013" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="sunce01s_" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1201" effect_file="caocaofeixing_" effect_file_num="3" start_time="0.8" speed="1000" start_position="A;0;0" end_position="T;0;0"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="caocaomingzhong_" music_file="guangqiangbao.mp3" effect_file_num="10" start_time="0" start_position="T;0;0" start_scale="1.8" end_scale="1.8"></item>
+             <item id="1302" start_time="0.1" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--孙坚 模型 远程 普通攻击-->
+	<skill id ="29020014" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="sunjian01s_" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1201" effect_file="caocaofeixing_" effect_file_num="3" start_time="1.1" speed="1000" start_position="A;0;0" end_position="T;0;0"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="caocaomingzhong_" music_file="guangqiangbao.mp3" effect_file_num="10" start_time="0" start_position="T;0;0" start_scale="1.8" end_scale="1.8"></item>
+             <item id="1302" start_time="0.1" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--夏侯惇 模型 远程 普通攻击-->
+	<skill id ="29020015" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="xiahoudun01s_" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1201" effect_file="caocaofeixing_" effect_file_num="3" start_time="0.9" speed="1000" start_position="A;0;0" end_position="T;0;0"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="caocaomingzhong_" music_file="guangqiangbao.mp3" effect_file_num="10" start_time="0" start_position="T;0;0" start_scale="1.8" end_scale="1.8"></item>
+             <item id="1302" start_time="0.1" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--小乔 模型 谋士 普通攻击-->
+	<skill id ="29020016" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="xiaoqiao01s_" effect_file_num="16" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1201" effect_file="ziyandan31GG_" effect_file_num="3" start_time="0.6" speed="1000" start_position="A;0;0" end_position="T;0;0" start_scale="1.8" end_scale="1.8"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="ziyanbao41GG_" music_file="ziyanbao.mp3" effect_file_num="12" start_time="0" start_position="T;0;0" start_scale="1.8" end_scale="1.8"></item>
+             <item id="1302" start_time="0.2" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--许褚 模型 近战 普通攻击-->
+	<skill id ="29020017" target_type="1">
+	    <!--移动-->
+		<move>
+             <item id="1001" effect_file="xuchu01_" effect_file_num="1" speed="800" start_position="A;0;0" end_position="T;-45;0" target="A"></item>
+        </move>
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="baozha21GG_" effect_file_num="6" start_time="0.1"></item>
+		     <item id="1102" effect_file="xuchu01s_" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="baozha41GG_" music_file="baozha4.mp3" effect_file_num="6" start_time="0.7" start_position="T;0;0" start_scale="1.8" end_scale="1.8"></item>
+             <item id="1302" start_time="0.9" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--张飞 模型 近战 普通攻击-->
+	<skill id ="29020018" target_type="1">
+	    <!--移动-->
+		<move>
+             <item id="1001" effect_file="zhangfei01_" effect_file_num="1" speed="800" start_position="A;0;0" end_position="T;-45;0" target="A"></item>
+        </move>
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="baozha21GG_" effect_file_num="6" start_time="0.1"></item>
+		     <item id="1102" effect_file="zhangfei01s_" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="baozha41GG_" music_file="baozha4.mp3" effect_file_num="6" start_time="0.7" start_position="T;0;0" start_scale="1.8" end_scale="1.8"></item>
+             <item id="1302" start_time="0.9" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--赵云 模型 近战 普通攻击-->
+	<skill id ="29020019" target_type="1">
+	    <!--移动-->
+		<move>
+             <item id="1001" effect_file="zhaoyun01_" effect_file_num="1" speed="800" start_position="A;0;0" end_position="T;-45;0" target="A"></item>
+        </move>
+		
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="baozha21GG_" effect_file_num="6" start_time="0.2"></item>
+		     <item id="1102" effect_file="zhaoyun01s_" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+		
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="baozha41GG_" music_file="baozha4.mp3" effect_file_num="6" start_time="0.8" start_position="T;0;0" start_scale="1.8" end_scale="1.8"></item>
+             <item id="1302" start_time="1" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--织女 模型 谋士 普通攻击（雷击）-->
+	<skill id ="29020020" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="zhinv01s_" effect_file_num="16" start_time="0" general_return_time="1.7"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="luolei41GG_" music_file="luolei.mp3" effect_file_num="8" start_time="1.1" start_position="T;0;60" end_position="T;0;60" start_scale="1.8" end_scale="1.8"></item>
+             <item id="1302" start_time="1.4" target="T" drop_blood="100"></item>
+        </arm>
+	</skill>
+	
+	<!--周瑜 模型 近战 普通攻击-->
+	<skill id ="29020021" target_type="1">
+	    <!--移动-->
+		<move>
+             <item id="1001" effect_file="zhouyu01_" effect_file_num="1" speed="800" start_position="A;0;0" end_position="T;-45;0" target="A"></item>
+        </move>
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="baozha21GG_" effect_file_num="6" start_time="0.1"></item>
+		     <item id="1102" effect_file="zhouyu01s_" effect_file_num="16" start_time="0" general_return_time="1.7"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="baozha41GG_" music_file="baozha4.mp3" effect_file_num="6" start_time="0.7" start_position="T;0;0" start_scale="1.8" end_scale="1.8"></item>
+             <item id="1302" start_time="0.9" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--诸葛亮 模型 谋士 普通攻击（雷击）-->
+	<skill id ="29020022" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="zhugeliang01s_" effect_file_num="16" start_time="0" general_return_time="1.7"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="luolei41GG_" music_file="luolei.mp3" effect_file_num="8" start_time="1" start_position="T;0;60" end_position="T;0;60" start_scale="1.8" end_scale="1.8"></item>
+             <item id="1302" start_time="1.3" target="T" drop_blood="100"></item>
+        </arm>
+	</skill>
+	
+	
+	<!--笔谋 模型 谋士 普通攻击-->
+	<skill id ="29020023" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="bimou01s_" effect_file_num="15" start_time="0" general_return_time="1.6"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1201" effect_file="ziyandan31GG_" effect_file_num="3" start_time="0.7" speed="1000" start_position="A;0;0" end_position="T;0;0" start_scale="1.8" end_scale="1.8"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="ziyanbao41GG_" music_file="ziyanbao.mp3" effect_file_num="12" start_time="0" start_position="T;0;0" start_scale="1.8" end_scale="1.8"></item>
+             <item id="1302" start_time="0.2" target="T" drop_blood="100"></item>
+        </arm>
+	</skill>
+	
+	<!--锤步 模型 近战 普通攻击-->
+	<skill id ="29020024" target_type="1">
+	    <!--移动-->
+		<move>
+             <item id="1001" effect_file="chuibu01_" effect_file_num="1" speed="800" start_position="A;0;0" end_position="T;-45;0" target="A"></item>
+        </move>
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="baozha21GG_" effect_file_num="6" start_time="0.1"></item>
+		     <item id="1102" effect_file="chuibu01s_" effect_file_num="16" start_time="0" general_return_time="1.7"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="baozha41GG_" music_file="baozha4.mp3" effect_file_num="6" start_time="0.9" start_position="T;0;0" start_scale="1.8" end_scale="1.8"></item>
+             <item id="1302" start_time="1.1" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--刀骑 模型 近战 普通攻击-->
+	<skill id ="29020025" target_type="1">
+	    <!--移动-->
+		<move>
+             <item id="1001" effect_file="daoqi01_" effect_file_num="1" speed="800" start_position="A;0;0" end_position="T;-45;0" target="A"></item>
+        </move>
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="baozha21GG_" effect_file_num="6" start_time="0.1"></item>
+		     <item id="1102" effect_file="daoqi01s_" effect_file_num="16" start_time="0" general_return_time="1.7"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="baozha41GG_" music_file="baozha4.mp3" effect_file_num="6" start_time="0.8" start_position="T;0;0" start_scale="1.8" end_scale="1.8"></item>
+             <item id="1302" start_time="1" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--斧骑 模型 近战 普通攻击-->
+	<skill id ="29020026" target_type="1">
+	    <!--移动-->
+		<move>
+             <item id="1001" effect_file="daoqi01_" effect_file_num="1" speed="800" start_position="A;0;0" end_position="T;-45;0" target="A"></item>
+        </move>
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="baozha21GG_" effect_file_num="6" start_time="0.1"></item>
+		     <item id="1102" effect_file="daoqi01s_" effect_file_num="16" start_time="0" general_return_time="1.7"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="baozha41GG_" music_file="baozha4.mp3" effect_file_num="6" start_time="0.8" start_position="T;0;0" start_scale="1.8" end_scale="1.8"></item>
+             <item id="1302" start_time="1" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--魔关羽 模型 近战 普通攻击（用了关羽动作）-->
+	<skill id ="29020027" target_type="1">
+	    <!--移动-->
+		<move>
+             <item id="1001" effect_file="moguanyu01_" effect_file_num="1" speed="800" start_position="A;0;0" end_position="T;-45;0" target="A"></item>
+        </move>
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="moguanyu01s_" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="daoguang41GG_" music_file="daoguang.mp3" effect_file_num="6" start_time="0.6" start_position="T;0;0" start_scale="1.1" end_scale="1.1"></item>
+             <item id="1302" start_time="0.8" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+<!--6个 小兵模型 普攻特效-->
+
+	<!--步兵 模型 近战 普通攻击（刀盾砍）-->
+	<skill id ="29030001" target_type="1">
+	    <!--移动-->
+		<move>
+             <item id="1001" effect_file="bubing01_" effect_file_num="1" speed="800" start_position="A;0;0" end_position="T;-45;0" target="A"></item>
+        </move>
+		
+        <!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="bubing01s_" effect_file_num="15" start_time="0" general_return_time="1.6"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+		
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="baozha41GG_" music_file="baozha4.mp3" effect_file_num="6" start_time="0.7" start_position="T;0;0" start_scale="1.8" end_scale="1.8"></item>
+             <item id="1302" start_time="1" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--男弓箭 模型 远程 普通攻击-->
+	<skill id ="29030002" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="nangongjian01s_" effect_file_num="23" start_time="0" general_return_time="2.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1201" effect_file="caocaofeixing_" effect_file_num="3" start_time="1.5" speed="1000" start_position="A;0;0" end_position="T;0;0"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="caocaomingzhong_" music_file="guangqiangbao.mp3" effect_file_num="10" start_time="0" start_position="T;0;0" start_scale="1.8" end_scale="1.8"></item>
+             <item id="1302" start_time="0.1" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--男谋士 模型 谋士 普通攻击-->
+	<skill id ="29030003" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="nanmoushi01s_" effect_file_num="15" start_time="0" general_return_time="1.6"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1201" effect_file="ziyandan31GG_" effect_file_num="3" start_time="0.8" speed="1000" start_position="A;0;0" end_position="T;0;0" start_scale="1.8" end_scale="1.8"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="ziyanbao41GG_" music_file="ziyanbao.mp3" effect_file_num="12" start_time="0" start_position="T;0;0" start_scale="1.8" end_scale="1.8"></item>
+             <item id="1302" start_time="0.2" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--女弓箭 模型 远程 普通攻击-->
+	<skill id ="29030004" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="nvgongjian01s_" effect_file_num="21" start_time="0" general_return_time="2.2"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1201" effect_file="caocaofeixing_" effect_file_num="3" start_time="1.5" speed="1000" start_position="A;0;0" end_position="T;0;0"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="caocaomingzhong_" music_file="guangqiangbao.mp3" effect_file_num="10" start_time="0" start_position="T;0;0" start_scale="1.8" end_scale="1.8"></item>
+             <item id="1302" start_time="0.1" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--女谋士 模型 谋士 普通攻击-->
+	<skill id ="29030005" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="moushi01s_" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1201" effect_file="ziyandan31GG_" effect_file_num="3" start_time="0.6" speed="1000" start_position="A;0;0" end_position="T;0;0" start_scale="1.8" end_scale="1.8"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="ziyanbao41GG_" music_file="ziyanbao.mp3" effect_file_num="12" start_time="0" start_position="T;0;0" start_scale="1.8" end_scale="1.8"></item>
+             <item id="1302" start_time="0.2" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--骑兵 模型 近战 普通攻击（刺）-->
+	<skill id ="29030006" target_type="1">
+	    <!--移动-->
+		<move>
+             <item id="1001" effect_file="qibing01_" effect_file_num="1" speed="800" start_position="A;0;0" end_position="T;-45;0" target="A"></item>
+        </move>
+		
+        <!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="qibing01s_" effect_file_num="16" start_time="0" general_return_time="1.7"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+		
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="baozha41GG_" music_file="baozha4.mp3" effect_file_num="6" start_time="0.8" start_position="T;0;0" start_scale="1.8" end_scale="1.8"></item>
+             <item id="1302" start_time="1" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+<!--12+2个 小兵+武将 技能 特效-->
+	
+	<!--步兵 技能 步兵模型 近战 单体（原地 环爆）-->
+	<skill id ="29040001"  target_type="1">
+	    <!--移动-->
+		
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="baozha21GG_" effect_file_num="6" start_time="0.1"></item>
+             <item id="1102" effect_file="bubing01s1_" effect_file_num="23" start_time="0" general_return_time="2.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="huanbao41GG_" music_file="huanbao.mp3" effect_file_num="11" start_time="0.7" start_position="T;0;0"></item>
+             <item id="1302" start_time="1" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--骑兵 技能 骑兵模型 近战 单体（原地 枪刺聚气）-->
+	<skill id ="29040002"  target_type="1">
+	    <!--移动-->
+		
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="baozha21GG_" effect_file_num="6" start_time="0.2"></item>
+             <item id="1102" effect_file="qibing01s1_" effect_file_num="16" start_time="0" general_return_time="1.7"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="qiangcijuqi21GG_" music_file="qiangcijuqi.mp3" effect_file_num="13" start_time="0.8" start_position="T;0;0"></item>
+             <item id="1302" start_time="1.1" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--男弓箭手 技能 男弓箭模型 远程 单体（枪刺聚气）-->
+	<skill id ="29040003" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="nangongjian01s_" effect_file_num="23" start_time="0" general_return_time="2.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1201" effect_file="daqiaofeixing2_" effect_file_num="4" start_time="1.5" speed="1000" start_position="A;0;0" end_position="T;0;0"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="qiangcijuqi21GG_" music_file="qiangcijuqi.mp3" effect_file_num="13" start_time="0" start_position="T;0;0" ></item>
+             <item id="1302" start_time="0.1" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--女弓箭手 技能 女弓箭模型 远程 单体（雷云）-->
+	<skill id ="29040004" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="nvgongjian01s_" effect_file_num="21" start_time="0" general_return_time="2.2"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1201" effect_file="daqiaofeixing1_" effect_file_num="4" start_time="1.5" speed="1000" start_position="A;0;0" end_position="T;0;0"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="leiyun21GG_" music_file="leiyun.mp3" effect_file_num="6" start_time="0" start_position="T;0;0" ></item>
+             <item id="1302" start_time="0.2" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--火计谋士 1 男谋士模型 谋士 单体（火焰）-->
+	<skill id ="29040005" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="nanmoushi01s1_" effect_file_num="23" start_time="0" general_return_time="2.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="huoyan41GG_" music_file="huoyan.mp3" effect_file_num="20" start_time="1.5" start_position="T;0;0" ></item>
+             <item id="1302" start_time="2.3" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--水计谋士 1 男谋士模型 谋士 单体（冰锥）-->
+	<skill id ="29040006" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="nanmoushi01s1_" effect_file_num="23" start_time="0" general_return_time="2.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="bingzhui41GG_" music_file="bingzhui.mp3" effect_file_num="20" start_time="1.6" start_position="T;0;0" ></item>
+             <item id="1302" start_time="2.4" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--雷计谋士 1 男谋士模型 谋士 单体（落雷）-->
+	<skill id ="29040007" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="nanmoushi01s1_" effect_file_num="23" start_time="0" general_return_time="2.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="luolei41GG_" music_file="luolei.mp3" effect_file_num="8" start_time="1.6" start_position="T;0;60" end_position="T;0;60"></item>
+             <item id="1302" start_time="1.9" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--医疗兵 1 男谋士模型 谋士 单体（加血）-->
+	<skill id ="29040008" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="nanmoushi01s1_" effect_file_num="23" start_time="0" general_return_time="2.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="jiaxue41GG_" music_file="jiaxue.mp3" effect_file_num="13" start_time="1.6" start_position="T;0;0" ></item>
+             <item id="1302" effect_file_num="0" start_time="2.4" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--火计谋士 2（女） 谋士模型 谋士 单体（火焰）-->
+	<skill id ="29040009" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="moushi01s1_" effect_file_num="17" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="huoyan41GG_" music_file="huoyan.mp3" effect_file_num="20" start_time="1.1" start_position="T;0;0" ></item>
+             <item id="1302" start_time="1.9" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--水计谋士 2（女） 谋士模型 谋士 单体（冰锥）-->
+	<skill id ="29040010" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="moushi01s1_" effect_file_num="17" start_time="0" general_return_time="1.8"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="bingzhui41GG_" music_file="bingzhui.mp3" effect_file_num="20" start_time="1.2" start_position="T;0;0" ></item>
+             <item id="1302" start_time="2" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--雷计谋士 2（女） 谋士模型 谋士 单体（落雷）-->
+	<skill id ="29040011" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="moushi01s1_" effect_file_num="17" start_time="0" general_return_time="1.8"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="luolei41GG_" music_file="luolei.mp3" effect_file_num="8" start_time="1.2" start_position="T;0;60" end_position="T;0;60"></item>
+             <item id="1302" start_time="1.5" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--医疗兵 2（女） 谋士模型 谋士 单体（加血）-->
+	<skill id ="29040012" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1102" effect_file="moushi01s1_" effect_file_num="17" start_time="0" general_return_time="1.8"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="jiaxue41GG_" music_file="jiaxue.mp3" effect_file_num="13" start_time="1.2" start_position="T;0;0" ></item>
+             <item id="1302" effect_file_num="0" start_time="2" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+	<!--敌方武将1 技能 笔谋模型 谋士 单体 （绿色火焰单体） -->
+    <skill id ="29040013"  target_type="1">
+        <!--移动-->
+		
+		<!--攻击-->
+        <attack>
+             <item id="1101" effect_file="guojiashifa_" music_file="guojia2.mp3" effect_file_num="15" start_time="0.1" start_scale="1.7" end_scale="1.7"></item>
+             <item id="1102" effect_file="bimou01s1_" effect_file_num="26" start_time="0" general_return_time="2.7"></item>
+        </attack>
+         
+        <!--飞行-->
+		<fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+		
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="lvsehuoyan41GG_" music_file="huoyan.mp3" effect_file_num="9" start_time="1"></item>
+	         <item id="1302" start_time="1.5" drop_blood="100"></item>
+         </arm> 
+    </skill>
+	
+	<!--敌方武将2 技能 牛郎模型 谋士 单体 （施法、飞行 火焰，命中 环爆 单体）-->
+	<skill id ="29040014" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="huoyan41GG_" music_file="huoyan.mp3" effect_file_num="8" start_time="0"></item>
+		     <item id="1102" effect_file="niulang01s_" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1201" effect_file="huoyan41GG_" effect_file_num="20" start_time="0.8" speed="1000" start_position="A;0;0" end_position="T;0;0"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+          
+        <!--命中-->
+        <arm>
+             <item id="1301" effect_file="huanbao41GG_" music_file="huanbao.mp3" effect_file_num="11" start_time="0" start_scale="3" end_scale="3"></item>
+             <item id="1302" start_time="0.3" target="T" drop_blood="100"></item>
+        </arm>
+    </skill>
+	
+<!--6个 小兵模型 加状态特效-->
+	
+	<!--步兵 模型 近战 加状态（刀盾砍）-->
+	<skill id ="29040101" target_type="1">
+	    <!--移动-->
+		
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="zengyi41GG_" music_file="zengyi4.mp3" effect_file_num="13" start_time="0.2"></item>		
+		     <item id="1102" effect_file="bubing01s_" effect_file_num="15" start_time="0" general_return_time="1.6"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+		
+        <!--命中-->
+        <arm>
+		     <item id="1301" effect_file="zengyi21GG_" effect_file_num="13" start_time="0.8"></item>
+             <item id="1302" effect_file_num="0" target="T"></item>
+        </arm>
+    </skill>
+	
+	<!--男弓箭 模型 远程 普通攻击-->
+	<skill id ="29040102" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+			 <item id="1101" effect_file="zengyi41GG_" music_file="zengyi4.mp3" effect_file_num="13" start_time="0.8"></item>
+		     <item id="1102" effect_file="nangongjian01s_" effect_file_num="23" start_time="0" general_return_time="2.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+		
+        <!--命中-->
+        <arm>
+		     <item id="1301" effect_file="zengyi21GG_" effect_file_num="13" start_time="1.4"></item>
+             <item id="1302" effect_file_num="0" target="T"></item>
+        </arm>
+    </skill>
+	
+	<!--男谋士 模型 谋士 普通攻击-->
+	<skill id ="29040103" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+			 <item id="1101" effect_file="zengyi41GG_" music_file="zengyi4.mp3" effect_file_num="13" start_time="0.3"></item>
+		     <item id="1102" effect_file="nanmoushi01s_" effect_file_num="15" start_time="0" general_return_time="1.6"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+		
+        <!--命中-->
+        <arm>
+		     <item id="1301" effect_file="zengyi21GG_" effect_file_num="13" start_time="0.9"></item>
+             <item id="1302" effect_file_num="0" target="T"></item>
+        </arm>
+    </skill>
+	
+	<!--女弓箭 模型 远程 普通攻击-->
+	<skill id ="29040104" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+			 <item id="1101" effect_file="zengyi41GG_" music_file="zengyi4.mp3" effect_file_num="13" start_time="0.8"></item>
+		     <item id="1102" effect_file="nvgongjian01s_" effect_file_num="21" start_time="0" general_return_time="2.2"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id_taget="1302"></item>
+        </fly>
+		
+        <!--命中-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+		
+        <!--命中-->
+        <arm>
+		     <item id="1301" effect_file="zengyi21GG_" effect_file_num="13" start_time="1.4"></item>
+             <item id="1302" effect_file_num="0" target="T"></item>
+        </arm>
+    </skill>
+	
+	<!--女谋士 模型 谋士 普通攻击-->
+	<skill id ="29040105" target_type="1">
+	    <!--移动-->
+				
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="zengyi41GG_" music_file="zengyi4.mp3" effect_file_num="13" start_time="0.1"></item>
+		     <item id="1102" effect_file="moushi01s_" effect_file_num="13" start_time="0" general_return_time="1.4"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+		
+        <!--命中-->
+        <arm>
+		     <item id="1301" effect_file="zengyi21GG_" effect_file_num="13" start_time="0.7"></item>
+             <item id="1302" effect_file_num="0" target="T"></item>
+        </arm>
+    </skill>
+	
+	<!--骑兵 模型 近战 普通攻击（刺）-->
+	<skill id ="29040106" target_type="1">
+	    <!--移动-->
+		
+        <!--攻击-->
+        <attack>
+		     <item id="1101" effect_file="zengyi41GG_" music_file="zengyi4.mp3" effect_file_num="13" start_time="0.3"></item>
+		     <item id="1102" effect_file="qibing01s_" effect_file_num="16" start_time="0" general_return_time="1.7"></item>
+        </attack>
+        
+        <!--飞行-->
+        <fly>
+             <item id="1401"
+			     next_id="1301" next_id_taget="1302"></item>
+        </fly>
+		
+        <!--命中-->
+        <arm>
+		     <item id="1301" effect_file="zengyi21GG_" effect_file_num="13" start_time="1"></item>
+             <item id="1302" effect_file_num="0" target="T"></item>
+        </arm>
+    </skill>
+
+	
+	
+	
+</skills>
+
+</battle_skill>
